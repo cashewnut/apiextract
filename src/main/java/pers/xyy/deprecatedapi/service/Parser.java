@@ -28,6 +28,12 @@ public class Parser {
 
     private ILibraryAPIService service = new LibraryAPIService();
 
+    public void parserFile(String path){
+        List<File> javaFile = FileUtil.getJavaFiles(new File(path));
+        for(File file : javaFile)
+            parseFile(file);
+    }
+
     public void parseFile(File file) {
 
         CompilationUnit cu = FileUtil.openCU(file.getAbsolutePath());
