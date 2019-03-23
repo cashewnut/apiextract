@@ -16,31 +16,24 @@ public class LibraryDAO implements ILibraryAPIDAO {
     private final static String INSERT_LIBRARY_API = LoadProperties.get("INSERT_LIBRARY_API");
 
     @Override
-    public int insertLibraryAPI(LibraryAPI libraryAPI) {
+    public void insertLibraryAPI(LibraryAPI libraryAPI) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Integer id = null;
         try {
             connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_LIBRARY_API, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(INSERT_LIBRARY_API);
             preparedStatement.setString(1, libraryAPI.getPkg());
             preparedStatement.setString(2, libraryAPI.getClazz());
             preparedStatement.setString(3, libraryAPI.getMethod());
             preparedStatement.setInt(4, libraryAPI.getLine());
             preparedStatement.setString(5, libraryAPI.getComment());
             preparedStatement.setInt(6, libraryAPI.getLibrary());
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                id = resultSet.getInt(1);
-            }
+            preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeResultset(resultSet);
             DBUtil.closePreparedStatement(preparedStatement);
             DBUtil.closeConnection(connection);
         }
-        return id;
     }
 }

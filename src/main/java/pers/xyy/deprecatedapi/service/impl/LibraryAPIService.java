@@ -10,7 +10,7 @@ public class LibraryAPIService implements ILibraryAPIService {
     private ILibraryAPIDAO libraryAPIDAO = new LibraryDAO();
 
     @Override
-    public int saveLibraryAPI(LibraryAPI libraryAPI) {
-        return libraryAPIDAO.insertLibraryAPI(libraryAPI);
+    public void saveLibraryAPI(LibraryAPI libraryAPI) {
+        libraryAPIDAO.insertLibraryAPI(libraryAPI);
     }
 }

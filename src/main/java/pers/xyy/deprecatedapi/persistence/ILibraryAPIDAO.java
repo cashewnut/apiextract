@@ -4,6 +4,6 @@ import pers.xyy.deprecatedapi.model.LibraryAPI;
 
 public interface ILibraryAPIDAO {
 
-    int insertLibraryAPI(LibraryAPI libraryAPI);
+    void insertLibraryAPI(LibraryAPI libraryAPI);
 
 }
