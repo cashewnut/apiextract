@@ -12,7 +12,7 @@ public class Main {
         //System.out.println(Integer.parseInt(args[0]));
         //System.out.println(args[1]);
         parser.setLibrary(Integer.parseInt(args[0]));
-        parser.parseFile(new File(args[1]));
+        parser.parseFile(args[1]);
 //        System.out.println("hello");
     }
 

@@ -28,7 +28,7 @@ public class Parser {
 
     private ILibraryAPIService service = new LibraryAPIService();
 
-    public void parserFile(String path){
+    public void parseFile(String path){
         List<File> javaFile = FileUtil.getJavaFiles(new File(path));
         for(File file : javaFile)
             parseFile(file);
