@@ -1,39 +1,40 @@
 package pers.xyy.deprecatedapi.persistence.impl;
 
-
-import pers.xyy.deprecatedapi.model.LibraryAPI;
-import pers.xyy.deprecatedapi.persistence.ILibraryAPIDAO;
+import pers.xyy.deprecatedapi.model.Library;
+import pers.xyy.deprecatedapi.persistence.ILibraryDAO;
 import pers.xyy.deprecatedapi.utils.DBUtil;
 import pers.xyy.deprecatedapi.utils.LoadProperties;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LibraryDAO implements ILibraryAPIDAO {
+public class LibraryDAO implements ILibraryDAO {
 
-    private final static String INSERT_LIBRARY_API = LoadProperties.get("INSERT_LIBRARY_API");
+    private final static String GETLIBRARY = LoadProperties.get("GETLIBRARY");
 
     @Override
-    public void insertLibraryAPI(LibraryAPI libraryAPI) {
+    public List<Library> getLibrary() {
+        List<Library> libraries = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        try {
+        ResultSet rs = null;
+        try{
             connection = DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_LIBRARY_API);
-            preparedStatement.setString(1, libraryAPI.getPkg());
-            preparedStatement.setString(2, libraryAPI.getClazz());
-            preparedStatement.setString(3, libraryAPI.getMethod());
-            preparedStatement.setInt(4, libraryAPI.getLine());
-            preparedStatement.setString(5, libraryAPI.getComment());
-            preparedStatement.setInt(6, libraryAPI.getLibrary());
-            preparedStatement.execute();
-        } catch (Exception e) {
+            preparedStatement = connection.prepareStatement(GETLIBRARY);
+            rs = preparedStatement.executeQuery();
+            while(rs.next())
+                libraries.add(new Library(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4)));
+
+        }catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
+            DBUtil.closeResultset(rs);
             DBUtil.closePreparedStatement(preparedStatement);
             DBUtil.closeConnection(connection);
         }
+        return libraries;
     }
 }

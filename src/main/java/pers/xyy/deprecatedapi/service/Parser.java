@@ -4,10 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import pers.xyy.deprecatedapi.model.LibraryAPI;
 import pers.xyy.deprecatedapi.service.impl.LibraryAPIService;
@@ -37,20 +34,26 @@ public class Parser {
     public void parseFile(File file) {
 
         CompilationUnit cu = FileUtil.openCU(file.getAbsolutePath());
-        this.pgName = cu.getPackageDeclaration().get().getNameAsString();
-        ClassOrInterfaceDeclaration clazz = cu.getClassByName(file.getName().replace(".java", "")).get();
+        if(cu.getPackageDeclaration().isPresent())
+            this.pgName = cu.getPackageDeclaration().get().getNameAsString();
+        ClassOrInterfaceDeclaration clazz = getClass(cu);
+        if(clazz == null)
+            return;
         this.clazzName = clazz.getNameAsString();
 
         NodeList<BodyDeclaration<?>> body = clazz.getMembers();//获取一个类中的成员
         List<MethodDeclaration> deprecatedMethods = getDeprecatedMethod(getMethodList(body));
 
         for (MethodDeclaration method : deprecatedMethods) {
+            System.out.println(pgName + "." + clazzName);
             LibraryAPI libraryAPI = new LibraryAPI();
             libraryAPI.setPkg(this.pgName);
             libraryAPI.setClazz(clazzName);
             libraryAPI.setLibrary(this.library);
-            libraryAPI.setComment(method.getComment().get().getContent());
-            libraryAPI.setLine(method.getBegin().get().line);
+            if(method.getComment().isPresent())
+                libraryAPI.setComment(method.getComment().get().getContent());
+            if(method.getBegin().isPresent())
+                libraryAPI.setLine(method.getBegin().get().line);
             StringBuilder sb = new StringBuilder();
             for (Modifier modifier : method.getModifiers())
                 sb.append(modifier.getKeyword().asString()).append(" ");
@@ -58,10 +61,20 @@ public class Parser {
             sb.append(method.getNameAsString()).append("(");
             method.getParameters().forEach(p -> p.setAnnotations(new NodeList<>()));
             sb.append(method.getParameters().stream().map(Node::toString).collect(Collectors.joining(", "))).append(") ");
+            libraryAPI.setMethod(sb.toString());
             System.out.println(sb);
             service.saveLibraryAPI(libraryAPI);
         }
 
+    }
+
+    private ClassOrInterfaceDeclaration getClass(CompilationUnit cu) {
+        try {
+            TypeDeclaration tp = cu.getTypes().stream().filter((n) -> (n instanceof ClassOrInterfaceDeclaration)).findFirst().get();
+            return (ClassOrInterfaceDeclaration) tp;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private List<MethodDeclaration> getMethodList(NodeList<BodyDeclaration<?>> body) {
@@ -92,7 +105,8 @@ public class Parser {
 
     public static void main(String[] args) {
         Parser parser = new Parser();
-        parser.parseFile(new File("/Users/xiyaoguo/Desktop/Assert.java"));
+        parser.setLibrary(1);
+        parser.parseFile("/Users/xiyaoguo/Desktop/5.1.5");
     }
 
 }

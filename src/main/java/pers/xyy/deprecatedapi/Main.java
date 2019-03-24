@@ -1,19 +1,21 @@
 package pers.xyy.deprecatedapi;
 
-
+import pers.xyy.deprecatedapi.model.Library;
 import pers.xyy.deprecatedapi.service.Parser;
+import pers.xyy.deprecatedapi.service.impl.LibraryService;
 
-import java.io.File;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         Parser parser = new Parser();
-        //System.out.println(Integer.parseInt(args[0]));
-        //System.out.println(args[1]);
-        parser.setLibrary(Integer.parseInt(args[0]));
-        parser.parseFile(args[1]);
-//        System.out.println("hello");
+        List<Library> libraries = new LibraryService().getLibrarys();
+        for (Library library : libraries) {
+            parser.setLibrary(library.getId());
+            parser.parseFile(library.getPath());
+        }
+
     }
 
 }

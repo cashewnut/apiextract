@@ -35,9 +35,10 @@ public class FileUtil {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File f : files) {
-                    if (f.isDirectory())
-                        javaFiles.addAll(getJavaFiles(f));
-                    else if (f.getName().length() > 5 && f.getName().endsWith(".java"))
+                    if (f.isDirectory()) {
+                        if (!f.getName().equals("test"))
+                            javaFiles.addAll(getJavaFiles(f));
+                    } else if (f.getName().length() > 5 && f.getName().endsWith(".java"))
                         javaFiles.add(f);
                 }
             }
