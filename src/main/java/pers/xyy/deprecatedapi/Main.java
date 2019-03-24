@@ -15,6 +15,9 @@ public class Main {
             parser.setLibrary(library.getId());
             parser.parseFile(library.getPath());
         }
+//        for (int i = 22; i >= 0; i--) {
+//            System.out.println("insert into library(name,version,path) values('spring-core','4.3." + i + "','/home/fdse/xyy/library/spring-core/4.3." + i + "');");
+//        }
 
     }
 
