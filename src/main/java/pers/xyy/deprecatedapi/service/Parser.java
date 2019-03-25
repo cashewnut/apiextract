@@ -2,18 +2,18 @@ package pers.xyy.deprecatedapi.service;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import pers.xyy.deprecatedapi.model.LibraryAPI;
 import pers.xyy.deprecatedapi.service.impl.LibraryAPIService;
 import pers.xyy.deprecatedapi.utils.FileUtil;
 
 import java.io.File;
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,11 +56,11 @@ public class Parser {
                 libraryAPI.setLine(method.getBegin().get().line);
             StringBuilder sb = new StringBuilder();
             for (Modifier modifier : method.getModifiers())
-                sb.append(modifier.getKeyword().asString()).append(" ");
-            sb.append(method.getType().asString()).append(" ");
+                sb.append(modifier.asString()).append(" ");
+            sb.append(method.getType().toString()).append(" ");
             sb.append(method.getNameAsString()).append("(");
-            method.getParameters().forEach(p -> p.setAnnotations(new NodeList<>()));
-            sb.append(method.getParameters().stream().map(Node::toString).collect(Collectors.joining(", "))).append(") ");
+            String types = method.getParameters().stream().map(p->p.getType().asString()).collect(Collectors.joining(", "));
+            sb.append(types).append(")");
             libraryAPI.setMethod(sb.toString());
             System.out.println(sb);
             service.saveLibraryAPI(libraryAPI);

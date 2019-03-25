@@ -1,13 +1,14 @@
 package pers.xyy.deprecatedapi.utils;
 
-import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
 
@@ -17,7 +18,7 @@ public class FileUtil {
         FileInputStream in;
         try {
             in = new FileInputStream(filePath);
-            cu = StaticJavaParser.parse(in); // 解析为语法树
+            cu = JavaParser.parse(in); // 解析为语法树
         } catch (Exception e) {
             e.printStackTrace();
         }
