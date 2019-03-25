@@ -21,17 +21,12 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(),new JavaParserTypeSolver(new File("src/main/java")));
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
         CompilationUnit cu = FileUtil.openCU("/Users/xiyaoguo/Documents/workspace/IntelliJ IDEA/apiextract/src/main/java/B.java");
         List<MethodCallExpr> mcs = cu.findAll(MethodCallExpr.class);
-        //mcs.get(0).
         System.out.println(cu.findAll(MethodCallExpr.class).get(0).resolveInvokedMethod().getQualifiedSignature());
-        //cu.findAll(MethodCallExpr.class).forEach(mce ->System.out.println(mce.resolveInvokedMethod().getQualifiedSignature()));
-//        methodCalls.forEach(mc ->System.out.println(
-//                JavaParserFacade.get(typeSolver).solve(mc)
-//                        .getCorrespondingDeclaration().getQualifiedSignature()));
 
     }
 

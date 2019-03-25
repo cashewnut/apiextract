@@ -50,7 +50,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>pers.xyy.deprecatedapi.Main</mainClass>
+                    <mainClass>pers.xyy.deprecatedapi.jdk.Main</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                 </configuration>
             </plugin>

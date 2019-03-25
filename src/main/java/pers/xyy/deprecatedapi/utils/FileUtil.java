@@ -47,6 +47,27 @@ public class FileUtil {
         return javaFiles;
     }
 
+    public static List<String> getJavaFilePath(File file) {
+        List<String> javaFiles = new ArrayList<>();
+        if (!file.exists())
+            return new ArrayList<>();
+        if (!file.isDirectory()) {
+            if (file.getName().endsWith(".java"))
+                javaFiles.add(file.getAbsolutePath());
+        } else {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for(File f : files){
+                    if(f.isDirectory())
+                        javaFiles.addAll(getJavaFilePath(f));
+                    else
+                        javaFiles.add(f.getAbsolutePath());
+                }
+            }
+        }
+        return javaFiles;
+    }
+
 
     public static void write(String filePath, String str) {
         File target = new File(filePath);
