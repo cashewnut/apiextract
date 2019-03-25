@@ -64,7 +64,7 @@ public class ParserJDK {
             if (md.getBegin().isPresent())
                 api.setLine(md.getBegin().get().line);
             System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            //service.saveJDKDeprecatedAPI(api);
+            service.saveJDKDeprecatedAPI(api);
         }
 
     }
