@@ -1,5 +1,6 @@
 package pers.xyy.deprecatedapi.jdk;
 
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -10,6 +11,11 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
 import pers.xyy.deprecatedapi.jdk.service.IJDKDeprecatedAPIService;
 import pers.xyy.deprecatedapi.jdk.service.impl.JDKDeprecatedAPIService;
@@ -36,6 +42,10 @@ public class ParserJDK {
     public void parseFile(String path) {
         CompilationUnit cu = FileUtil.openCU(path);
 
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(),new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk")));
+        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
+        JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
+
         //mds用于存放depreacated method
         List<MethodDeclaration> mds = new ArrayList<>();
         VoidVisitor<List<MethodDeclaration>> visitor = new DeprecatedAPIVisitor();
@@ -54,7 +64,7 @@ public class ParserJDK {
             if (md.getBegin().isPresent())
                 api.setLine(md.getBegin().get().line);
             System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            service.saveJDKDeprecatedAPI(api);
+            //service.saveJDKDeprecatedAPI(api);
         }
 
     }
@@ -70,6 +80,10 @@ public class ParserJDK {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        //new ParserJDK().parseFile("/Users/xiyaoguo/Desktop/Assert.java");
     }
 
 
