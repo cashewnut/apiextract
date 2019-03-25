@@ -57,11 +57,8 @@ public class FileUtil {
         } else {
             File[] files = file.listFiles();
             if (files != null) {
-                for(File f : files){
-                    if(f.isDirectory())
-                        javaFiles.addAll(getJavaFilePath(f));
-                    else
-                        javaFiles.add(f.getAbsolutePath());
+                for (File f : files) {
+                    javaFiles.addAll(getJavaFilePath(f));
                 }
             }
         }
