@@ -45,7 +45,7 @@ public class ParserJDK {
         CompilationUnit cu = FileUtil.openCU(path);
         System.out.println(">>>>>>>>" + path);
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk6")));
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk5")));
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
