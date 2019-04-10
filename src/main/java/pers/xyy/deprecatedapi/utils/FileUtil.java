@@ -3,10 +3,7 @@ package pers.xyy.deprecatedapi.utils;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +75,22 @@ public class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> read(String filePath) {
+        File target = new File(filePath);
+        List<String> list = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(target));
+            String str;
+            while ((str = br.readLine()) != null)
+                list.add(str);
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 

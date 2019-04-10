@@ -10,6 +10,7 @@ public class JDKDeprecatedAPI {
     private String methodArgs;
     private String comment;
     private Integer line;
+    private String replacedComment;
 
     public Integer getId() {
         return id;
@@ -73,5 +74,13 @@ public class JDKDeprecatedAPI {
 
     public void setLine(Integer line) {
         this.line = line;
+    }
+
+    public String getReplacedComment() {
+        return replacedComment;
+    }
+
+    public void setReplacedComment(String replaceComment) {
+        this.replacedComment = replaceComment;
     }
 }

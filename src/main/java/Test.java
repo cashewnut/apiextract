@@ -1,41 +1,75 @@
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.symbolsolver.JavaSymbolSolver;
-import com.github.javaparser.symbolsolver.javaparser.Navigator;
-import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade;
-import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
+import pers.xyy.deprecatedapi.jdk.service.IJDKDeprecatedAPIService;
+import pers.xyy.deprecatedapi.jdk.service.impl.JDKDeprecatedAPIService;
+import pers.xyy.deprecatedapi.utils.DBUtil;
 import pers.xyy.deprecatedapi.utils.FileUtil;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Test {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws URISyntaxException {
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
-        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
-        JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
-        CompilationUnit cu = FileUtil.openCU("/Users/xiyaoguo/Documents/workspace/IntelliJ IDEA/apiextract/src/main/java/B.java");
-        List<MethodCallExpr> mcs = cu.findAll(MethodCallExpr.class);
-        System.out.println(cu.findAll(MethodCallExpr.class).get(0).resolveInvokedMethod().getQualifiedSignature());
+//        String str = "     * Returns the component at the specified index.\n" +
+//                "     *\n" +
+//                "     * @param i an integer specifying the position, where 0 is first\n" +
+//                "     * @return the <code>Component</code> at the position,\n" +
+//                "     *          or <code>null</code> for an invalid index\n" +
+//                "     * @deprecated replaced by <code>getComponent(int i)</code>";
+
+//        String str = "     * Returns the text contained in this <code>TextComponent</code>.\n" +
+//                "     * If the underlying document is <code>null</code>, will give a\n" +
+//                "     * <code>NullPointerException</code>.\n" +
+//                "     * <p>\n" +
+//                "     * For security reasons, this method is deprecated.  Use the\n" +
+//                "     <code>* getPassword</code> method instead.\n" +
+//                "     * @deprecated As of Java 2 platform v1.2,\n" +
+//                "     * replaced by <code>getPassword</code>.\n" +
+//                "     * @return the text";
+//        String str = "use method <code>set_result</code>";
+//
+//        Pattern p = Pattern.compile("use (the )?method <code>([#]?[\\w]+(\\([\\w\\s,\\[\\].<>?]*\\))?\\s?)*</code>");
+////        Pattern p = Pattern.compile("\\{@link ([#]?[\\w]+\\([\\w\\s,\\[\\].<>?]*\\)\\s?)*}.");
+//        Matcher m = p.matcher(str);
+//        System.out.println(m.find());
+//        System.out.println(m.group());
+
+        //System.out.println(Test.class.getResource("/args").getPath());
+
+//        List<String> prefixs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
+        //System.out.println(prefixs);
+
+        IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
+        List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
+//        for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
+//            String comment = api.getComment();
+//            if(comment != null && comment.startsWith("\n"))
+//                api.setComment(comment.substring(1));
+//        }
+        //service.updateById(jdkDeprecatedAPIS);
+
+        //String str =
+
+        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
+            JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(i);
+            StringBuilder sb = new StringBuilder();
+            sb.append("<No.").append(api.getId()).append(">\n");
+            sb.append(api.getComment()).append("\n");
+            sb.append(api.getPackageName()).append(".").append(api.getClassName()).append(".");
+            sb.append(api.getMethodName()).append("(").append(api.getMethodArgs()).append(")  ").append("line : ").append(api.getLine());
+            sb.append("\n\n").append(api.getReplacedComment());
+            sb.append("\n\n-----------------------------\n");
+            FileUtil.write("/Users/xiyaoguo/Desktop/deprecated_api_list", sb.toString());
+        }
+
 
     }
 
-//    public static class MethodNamePrinter extends VoidVisitorAdapter<Void> {
-//        @Override
-//        public void visit(MethodDeclaration n, Void arg) {
-//            super.visit(n, arg);
-//            System.out.println(n.getName());
-//        }
-//    }
 
 }
