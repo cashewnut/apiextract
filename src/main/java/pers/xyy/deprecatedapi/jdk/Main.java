@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File root = new File("/home/fdse/xyy/JDK/JDK1.6-Java SE Development Kit 6u45");
+        File root = new File("/home/fdse/xyy/JDK/JDK1.7");
         List<String> javaFilePath;
         for(File f : Objects.requireNonNull(root.listFiles())){
             javaFilePath = FileUtil.getJavaFilePath(f);
