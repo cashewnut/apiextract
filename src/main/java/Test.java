@@ -45,18 +45,20 @@ public class Test {
 //        List<String> prefixs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
         //System.out.println(prefixs);
 
-        IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
+        //格式化注释
+        /*IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
         List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
-//        for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
-//            String comment = api.getComment();
-//            if(comment != null && comment.startsWith("\n"))
-//                api.setComment(comment.substring(1));
-//        }
-        //service.updateById(jdkDeprecatedAPIS);
+        for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
+            String comment = api.getComment();
+            if (comment != null)
+                api.setComment(comment.trim());
+        }
+        service.updateById(jdkDeprecatedAPIS);*/
 
         //String str =
 
-        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
+        //输出文件
+/*        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
             JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(i);
             StringBuilder sb = new StringBuilder();
             sb.append("<No.").append(api.getId()).append(">\n");
@@ -66,7 +68,7 @@ public class Test {
             sb.append("\n\n").append(api.getReplacedComment());
             sb.append("\n\n-----------------------------\n");
             FileUtil.write("/Users/xiyaoguo/Desktop/deprecated_api_list", sb.toString());
-        }
+        }*/
 
 
     }
