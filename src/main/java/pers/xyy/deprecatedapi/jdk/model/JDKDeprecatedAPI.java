@@ -1,5 +1,7 @@
 package pers.xyy.deprecatedapi.jdk.model;
 
+import java.util.Objects;
+
 public class JDKDeprecatedAPI {
 
     private Integer id;
@@ -82,5 +84,22 @@ public class JDKDeprecatedAPI {
 
     public void setReplacedComment(String replaceComment) {
         this.replacedComment = replaceComment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JDKDeprecatedAPI that = (JDKDeprecatedAPI) o;
+        return Objects.equals(packageName, that.packageName) &&
+                Objects.equals(className, that.className) &&
+                Objects.equals(methodName, that.methodName) &&
+                Objects.equals(methodReturnType, that.methodReturnType) &&
+                Objects.equals(methodArgs, that.methodArgs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(packageName, className, methodName, methodReturnType, methodArgs);
     }
 }

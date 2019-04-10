@@ -27,6 +27,8 @@ import pers.xyy.deprecatedapi.utils.FileUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ParserJDK {
@@ -43,11 +45,11 @@ public class ParserJDK {
         CompilationUnit cu = FileUtil.openCU(path);
         System.out.println(">>>>>>>>" + path);
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk5")));
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk8")));
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
-        //mds用于存放depreacated method
+        //mds用于存放deprecated method
         List<MethodDeclaration> mds = new ArrayList<>();
         VoidVisitor<List<MethodDeclaration>> visitor = new DeprecatedAPIVisitor();
         visitor.visit(cu, mds);
@@ -77,8 +79,16 @@ public class ParserJDK {
             for (AnnotationExpr annotate : n.getAnnotations()) {
                 if (annotate.getNameAsString().equals("Deprecated")) {
                     arg.add(n);
-                    break;
+                    return;
                 }
+            }
+            if (n.getComment().isPresent()) {
+                String comment = n.getComment().get().getContent();
+                String regex = "@deprecated";
+                Pattern p = Pattern.compile(regex);
+                Matcher m = p.matcher(comment);
+                if (m.find())
+                    arg.add(n);
             }
         }
     }
