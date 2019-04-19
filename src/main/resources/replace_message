@@ -1,0 +1,34 @@
+1
+replaced by <code>getComponent(int i)</code>
+4
+use getKeyStroke(char)
+5
+replaced by <code>getPassword</code>
+6
+replaced by <code>getPassword</code>
+7
+replaced by <code>setJMenuBar(JMenuBar menu)</code>
+8
+replaced by <code>getJMenuBar()</code>
+10
+replaced by {@link java.awt.Container#getComponent(int)}
+11
+replaced by <code>KeyboardFocusManager.getFocusOwner()</code>
+12
+replaced by <code>Component.setFocusTraversalKeys(int, Set)</code> and <code>Container.setFocusCycleRoot(boolean)</code>
+13
+replaced by <code>FocusTraversalPolicy</code>
+14
+replaced by <code>FocusTraversalPolicy</code>
+15
+replaced by <code>FocusTraversalPolicy.getDefaultComponent(Container).requestFocus()</code>
+16
+replaced by <code>java.awt.Component.setEnabled(boolean)</code>
+17
+replaced by <code>java.awt.Component.setEnabled(boolean)</code>
+18
+replaced by <code>Component.setBounds(int, int, int, int)</code>
+20
+replaced by <code>new JScrollPane(aTable)</code>
+21
+replaced by <code>doLayout()</code>

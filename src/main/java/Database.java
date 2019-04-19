@@ -13,8 +13,11 @@ public class Database {
 
     public static void main(String[] args) throws URISyntaxException {
         IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
-        List<String> regexs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
+
         List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
+
+        //抽取正则表达式
+        /*List<String> regexs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
         for(JDKDeprecatedAPI api : jdkDeprecatedAPIS){
             String comment = api.getComment();
             if(comment == null)
@@ -27,7 +30,16 @@ public class Database {
                     break;
                 }
             }
+        }*/
+
+        //规范replace_comment
+        List<String> regexs = FileUtil.read(Test.class.getResource("/rm").toURI().getPath());
+        for (int i = 0; i < regexs.size(); i++) {
+            int id = Integer.parseInt(regexs.get(i));
+            JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(id - 1);
+            api.setReplacedComment(regexs.get(++i));
         }
+
         service.updateById(jdkDeprecatedAPIS);
     }
 

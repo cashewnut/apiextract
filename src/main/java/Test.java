@@ -45,10 +45,10 @@ public class Test {
 //        List<String> prefixs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
         //System.out.println(prefixs);
 
-        //格式化注释
-        /*IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
+        IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
         List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
-        for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
+        //格式化注释
+        /*for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
             String comment = api.getComment();
             if (comment != null)
                 api.setComment(comment.trim());
@@ -58,7 +58,7 @@ public class Test {
         //String str =
 
         //输出文件
-/*        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
+        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
             JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(i);
             StringBuilder sb = new StringBuilder();
             sb.append("<No.").append(api.getId()).append(">\n");
@@ -68,7 +68,7 @@ public class Test {
             sb.append("\n\n").append(api.getReplacedComment());
             sb.append("\n\n-----------------------------\n");
             FileUtil.write("/Users/xiyaoguo/Desktop/deprecated_api_list", sb.toString());
-        }*/
+        }
 
 
     }
