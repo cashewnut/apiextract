@@ -30,4 +30,9 @@ public class JDKDeprecatedAPIService implements IJDKDeprecatedAPIService {
     public void updateById(List<JDKDeprecatedAPI> jdkDeprecatedAPIS) {
         dao.updateById(jdkDeprecatedAPIS);
     }
+
+    @Override
+    public void updateArgs(JDKDeprecatedAPI jdkDeprecatedAPI, String args) {
+        dao.updateArgs(jdkDeprecatedAPI, args);
+    }
 }

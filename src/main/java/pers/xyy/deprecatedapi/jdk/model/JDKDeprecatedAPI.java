@@ -13,6 +13,12 @@ public class JDKDeprecatedAPI {
     private String comment;
     private Integer line;
     private String replacedComment;
+    private String rPackageName;
+    private String rClassName;
+    private String rMethodName;
+    private String rReturnType;
+    private String rMethodArgs;
+    private String rInvoker;
 
     public Integer getId() {
         return id;
@@ -84,6 +90,54 @@ public class JDKDeprecatedAPI {
 
     public void setReplacedComment(String replaceComment) {
         this.replacedComment = replaceComment;
+    }
+
+    public String getrPackageName() {
+        return rPackageName;
+    }
+
+    public void setrPackageName(String rPackageName) {
+        this.rPackageName = rPackageName;
+    }
+
+    public String getrClassName() {
+        return rClassName;
+    }
+
+    public void setrClassName(String rClassName) {
+        this.rClassName = rClassName;
+    }
+
+    public String getrMethodName() {
+        return rMethodName;
+    }
+
+    public void setrMethodName(String rMethodName) {
+        this.rMethodName = rMethodName;
+    }
+
+    public String getrReturnType() {
+        return rReturnType;
+    }
+
+    public void setrReturnType(String rReturnType) {
+        this.rReturnType = rReturnType;
+    }
+
+    public String getrMethodArgs() {
+        return rMethodArgs;
+    }
+
+    public void setrMethodArgs(String rMethodArgs) {
+        this.rMethodArgs = rMethodArgs;
+    }
+
+    public String getrInvoker() {
+        return rInvoker;
+    }
+
+    public void setrInvoker(String rInvoker) {
+        this.rInvoker = rInvoker;
     }
 
     @Override
