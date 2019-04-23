@@ -106,6 +106,8 @@ public class ParserJDK {
         visitor.visit(cu, mds);
 
         for (MethodDeclaration md : mds) {
+            if(md.getNameAsString().equals("setThreshold"))
+                continue;
             JDKDeprecatedAPI api = new JDKDeprecatedAPI();
             api.setPackageName(md.resolve().getPackageName());
             api.setClassName(md.resolve().getClassName());
