@@ -1,482 +1,723 @@
 1
 replaced by <code>getComponent(int i)</code>
+getComponent(int)
 4
 use getKeyStroke(char)
+getKeyStroke(char)
 5
 replaced by <code>getPassword</code>
+getPassword
 6
 replaced by <code>getPassword</code>
+getPassword
 7
 replaced by <code>setJMenuBar(JMenuBar menu)</code>
+setJMenuBar(JMenuBar)
 8
 replaced by <code>getJMenuBar()</code>
+getJMenuBar()
 10
 replaced by {@link java.awt.Container#getComponent(int)}
+java.awt.Container#getComponent(int)
 11
 replaced by <code>KeyboardFocusManager.getFocusOwner()</code>
+KeyboardFocusManager.getFocusOwner()
 12
 <code>Container.setFocusCycleRoot(boolean)</code>
+Container.setFocusCycleRoot(boolean)
 13
 replaced by <code>FocusTraversalPolicy</code>
+FocusTraversalPolicy
 14
 replaced by <code>FocusTraversalPolicy</code>
+FocusTraversalPolicy
 15
 replaced by <code>FocusTraversalPolicy.getDefaultComponent(Container).requestFocus()</code>
+FocusTraversalPolicy.getDefaultComponent(Container).requestFocus()
 16
 replaced by <code>java.awt.Component.setEnabled(boolean)</code>
+java.awt.Component.setEnabled(boolean)
 17
 replaced by <code>java.awt.Component.setEnabled(boolean)</code>
+java.awt.Component.setEnabled(boolean)
 18
 replaced by <code>Component.setBounds(int, int, int, int)</code>
+Component.setBounds(int, int, int, int)
 20
 replaced by <code>new JScrollPane(aTable)</code>
+new JScrollPane(JTable)
 21
 replaced by <code>doLayout()</code>
+doLayout()
 23
 see View#modelToView
+View#modelToView
 24
 see View#viewToModel
+View#viewToModel
 26
 use insertAtBoundary
+insertAtBoundary
 27
 Replaced by <code>getText</code>
+getText
 28
 Replaced by <code>setText(text)</code>
+setText(String)
 29
 replaced by <code>getScrollMode()</code>
+getScrollMode()
 30
 replaced by <code>setScrollMode()</code>
+setScrollMode()
 31
 replaced by {@link #getSelectedValuesList()}
+#getSelectedValuesList()
 32
 replaced by <code>JScrollPane.getViewportBorderBounds()</code>
+JScrollPane.getViewportBorderBounds()
 35
 Replaced by {@link #uninstallListeners(JComponent)}
+#uninstallListeners(JComponent)
 42
 replaced by <code>getJMenuBar()</code>
+getJMenuBar()
 43
 replaced by <code>setJMenuBar(JMenuBar m)</code>
+setJMenuBar(JMenuBar)
 44
 replaced by <code>KeyboardFocusManager.setDefaultFocusTraversalPolicy(FocusTraversalPolicy)</code>
+KeyboardFocusManager.setDefaultFocusTraversalPolicy(FocusTraversalPolicy)
 45
 replaced by <code>KeyboardFocusManager.getDefaultFocusTraversalPolicy()</code>
+KeyboardFocusManager.getDefaultFocusTraversalPolicy()
 48
 Use the new method {@link #newFactory(java.lang.String,java.lang.ClassLoader)} instead.
+#newFactory(java.lang.String,java.lang.ClassLoader)
 49
 The replacement {@link #newFactory(java.lang.String, java.lang.ClassLoader)}
+#newFactory(java.lang.String, java.lang.ClassLoader)
 50
 Use javax.xml.soap.SOAPFactory.createElement(javax.xml.soap.Name) instead
+javax.xml.soap.SOAPFactory.createElement(javax.xml.soap.Name)
 51
 Use javax.xml.soap.SOAPFactory.createElement(String localName) instead
+javax.xml.soap.SOAPFactory.createElement(String)
 52
 Use javax.xml.soap.SOAPFactory.createElement(String localName, String prefix, String uri) instead
+javax.xml.soap.SOAPFactory.createElement(String, String, String)
 60
 please use the new {@link #setSchema(javax.xml.validation.Schema)} API
+#setSchema(javax.xml.validation.Schema)
 61
 please use the new {@link #getSchema()} API
+#getSchema()
 64
 Use {@link #getClassLoaderFor getClassLoaderFor}
+#getClassLoaderFor
 65
 Use {@link #getClassLoaderRepository}
+#getClassLoaderRepository
 66
 Use {@link #getClassLoader getClassLoader}
+#getClassLoader
 69
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 70
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 71
 replaced by {@link #getThreshold(ObjectName)}
+#getThreshold(ObjectName)
 72
 replaced by {@link #setInitThreshold}
+#setInitThreshold
 73
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 74
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 75
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 76
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 77
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 78
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 79
 replaced by {@link #getThreshold(ObjectName)}
+#getThreshold(ObjectName)
 80
 replaced by {@link #setInitThreshold}
+#setInitThreshold
 81
 replaced by {@link #getObservedObjects}
+#getObservedObjects
 82
 replaced by {@link #addObservedObject}
+#addObservedObject
 83
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 84
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 85
 replaced by {@link #getObservedObjects}
+#getObservedObjects
 86
 replaced by {@link #addObservedObject}
+#addObservedObject
 87
 replaced by {@link #getDerivedGauge(ObjectName)}
+#getDerivedGauge(ObjectName)
 88
 replaced by {@link #getDerivedGaugeTimeStamp(ObjectName)}
+#getDerivedGaugeTimeStamp(ObjectName)
 93
 Use a combination of create_recursive_tc and create_sequence_tc instead
+create_recursive_tc&create_sequence_tc
 94
 use <code>resolve_initial_references</code>
+resolve_initial_references
 104
 use operation()
+operation()
 105
 use the method <code>arguments</code>
+arguments
 106
 use the method <code>set_result</code>
+set_result
 107
 use set_exception()
+set_exception()
 127
 use {@link #resolve(Attr, String, boolean)}
+#resolve(Attr, String, boolean)
 129
 See {@link #engineCanResolveURI(ResourceResolverContext)}
+#engineCanResolveURI(ResourceResolverContext)
 150
 New method is <tt>getOwnerElement()</tt>.
+getOwnerElement()
 165
 use getFirstCommonSuperclass(ReferenceType t)
+getFirstCommonSuperclass(ReferenceType)
 173
 Replaced by isJavaIdentifierStart(char)
+isJavaIdentifierStart(char)
 174
 Replaced by isJavaIdentifierPart(char)
+isJavaIdentifierPart(char)
 175
 Replaced by isWhitespace(char)
+isWhitespace(char)
 176
 Replaced by {@link #defineClass(String, byte[], int, int) defineClass(String, byte[], int, int)}
+#defineClass(String, byte[], int, int)
 181
 @see #interrupt()
+#interrupt()
 182
 see {@link #stop()}
+#stop()
 185
 @see #checkAccess
+#checkAccess
 187
 It is recommended that the <code>checkPermission</code>
+checkPermission
 188
 It is recommended that the <code>checkPermission</code>
+checkPermission
 189
 It is recommended that the <code>checkPermission</code>
+checkPermission
 190
 It is recommended that the <code>checkPermission</code>
+checkPermission
 191
 It is recommended that the <code>checkPermission</code>
+checkPermission
 192
 It is recommended that the <code>checkPermission</code>
+checkPermission
 193
 It is recommended that the <code>checkPermission</code>
+checkPermission
 194
 Use #checkPermission(java.security.Permission) instead
+#checkPermission(java.security.Permission)
 195
-@see #checkPermission(java.security.Permission
+@see #checkPermission(java.security.Permission)
+#checkPermission(java.security.Permission)
 196
 @see #checkPermission(java.security.Permission)
+#checkPermission(java.security.Permission)
 197
 @see #checkPermission(java.security.Permission)
+#checkPermission(java.security.Permission)
 198
 @see #checkPermission(java.security.Permission)
+#checkPermission(java.security.Permission)
 199
 See {@link Thread#stop}
+Thread#stop
 200
-See {@link Thread#suspend}     
+See {@link Thread#suspend}
+Thread#suspend
 201
 See {@link Thread#suspend}
+Thread#suspend
 210
 @deprecated Use {@code setLogWriter}
+setLogWriter
 211
 Use {@code getLogWriter}
+getLogWriter
 212
 @deprecated Use {@code getBigDecimal(int columnIndex)}
+getBigDecimal(int)
 213
 use <code>getCharacterStream</code>
+getCharacterStream
 214
 @deprecated Use {@code getBigDecimal(int columnIndex)} or or {@code getBigDecimal(String columnLabel)}
+getBigDecimal(int)
 215
 use <code>getCharacterStream</code>
+getCharacterStream
 222
 use <code>getBigDecimal(int parameterIndex)</code>
+getBigDecimal(int)
 223
 @deprecated Use {@code setCharacterStream}
+setCharacterStream
 224
 Use {@link #exportObject(Remote, int) exportObject(Remote, port)} or {@link #exportObject(Remote, int, RMIClientSocketFactory, RMIServerSocketFactory) exportObject(Remote, port, csf, ssf)} instead
+#exportObject(Remote, int)
 250
 replaced by <code>loadClass(String,String)</code>
+loadClass(String,String)
 251
 @see java.lang.SecurityManager#getSecurityContext()
+java.lang.SecurityManager#getSecurityContext()
 262
 Use {@link #logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)} instead
+#logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)
 263
 Use {@link #logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)} instead
+#logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)
 264
 @deprecated Use {@link #logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)} instead
+#logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)
 265
 Use {@link #logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Throwable)} instead
+#logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Throwable)
 269
 replaced by <code>Calendar.set(year + 1900, month, date, hrs, min, sec)</code> or  code>GregorianCalendar(year + 1900, month, date, hrs, min, sec)</code>, using a UTC <code>TimeZone</code>, followed by <code>Calendar.getTime().getTime()</code>
+Calendar.set(year + 1900, month, date, hrs, min, sec)
 270
 replaced by <code>Calendar.get(Calendar.YEAR) - 1900</code>
+Calendar.get(Calendar.YEAR) - 1900
 271
 replaced by <code>Calendar.set(Calendar.YEAR, year + 1900)</code>
+Calendar.set(Calendar.YEAR, year + 1900)
 272
 replaced by <code>Calendar.get(Calendar.MONTH)</code>
+Calendar.get(Calendar.MONTH)
 273
 replaced by <code>Calendar.set(Calendar.MONTH, int month)</code>
+Calendar.set(Calendar.MONTH, int month)
 274
 replaced by <code>Calendar.get(Calendar.DAY_OF_MONTH)</code>
+Calendar.get(Calendar.DAY_OF_MONTH)
 275
 replaced by <code>Calendar.set(Calendar.DAY_OF_MONTH, int date)</code>
+Calendar.set(Calendar.DAY_OF_MONTH, int date)
 276
 replaced by <code>Calendar.get(Calendar.DAY_OF_WEEK)</code>
+Calendar.get(Calendar.DAY_OF_WEEK)
 277
 replaced by <code>Calendar.get(Calendar.HOUR_OF_DAY)</code>
+Calendar.get(Calendar.HOUR_OF_DAY)
 278
 replaced by <code>Calendar.set(Calendar.HOUR_OF_DAY, int hours)</code>
+Calendar.set(Calendar.HOUR_OF_DAY, int hours)
 279
 replaced by <code>Calendar.get(Calendar.MINUTE)</code>
+Calendar.get(Calendar.MINUTE)
 280
 replaced by <code>Calendar.set(Calendar.MINUTE, int minutes)</code>
+Calendar.set(Calendar.MINUTE, int minutes)
 281
 replaced by <code>Calendar.get(Calendar.SECOND)</code>
+Calendar.get(Calendar.SECOND)
 282
 replaced by <code>Calendar.set(Calendar.SECOND, int seconds)</code>
+Calendar.set(Calendar.SECOND, int seconds)
 283
 replaced by <code>DateFormat.format(Date date)</code>
+DateFormat.format(Date)
 284
 replaced by <code>DateFormat.format(Date date)</code>
+DateFormat.format(Date)
 285
 replaced by <code>-(Calendar.get(Calendar.ZONE_OFFSET) + Calendar.get(Calendar.DST_OFFSET)) / (60 * 1000)</code>
+-(Calendar.get(Calendar.ZONE_OFFSET) + Calendar.get(Calendar.DST_OFFSET)) / (60 * 1000)
 287
 via the {@link #toURI() toURI} method
+#toURI()
 291
 @deprecated Use {@link #setParameter(java.security.spec.AlgorithmParameterSpec) setParameter}
+#setParameter(java.security.spec.AlgorithmParameterSpec)
 293
 Replaced by {@link #engineSetParameter(java.security.spec.AlgorithmParameterSpec) engineSetParameter}
+#engineSetParameter(java.security.spec.AlgorithmParameterSpec)
 296
 Use setURL(URL, String, String, int, String, String, String, String)
+setURL(URL, String, String, int, String, String, String, String)
 304
 Use the following code or its equivalent instead
+
 305
 use setTimeToLive instead
+setTimeToLive
 306
 use getTimeToLive instead
+getTimeToLive
 307
 use the encode(String,String) method to specify the encoding
+encode(String,String)
 310
 replaced by <code>Component.setCursor(Cursor)</code>
+Component.setCursor(Cursor)
 311
 replaced by <code>Component.getCursor()</code>
+Component.getCursor()
 312
 replaced by <code>getMaxDescent()</code>
+getMaxDescent()
 313
 replaced by {@link #setVisible(boolean) setVisible(boolean)}
+#setVisible(boolean)
 314
 replaced by {@link #setVisible(boolean) setVisible(boolean)}
+#setVisible(boolean)
 315
 replaced by <code>getItemCount()</code>
+getItemCount()
 316
 replaced by <code>add(String)</code>
+add(String)
 317
 replaced by <code>add(String, int)</code>
+add(String, int)
 318
 replaced by <code>removeAll()</code>
+removeAll()
 319
 replaced by <code>remove(String)</code>
+remove(String)
 320
 replaced by <code>isIndexSelected(int)</code>
+isIndexSelected(int)
 321
 replaced by <code>isMultipleMode()</code>
+isMultipleMode()
 322
 replaced by <code>setMultipleMode(boolean)</code>
+setMultipleMode(boolean)
 323
 replaced by <code>getPreferredSize(int)</code>
+getPreferredSize(int)
 324
 replaced by <code>getPreferredSize()</code>
+getPreferredSize()
 325
 replaced by <code>getMinimumSize(int)</code>
+getMinimumSize(int)
 326
 replaced by <code>getMinimumSize()</code>
+getMinimumSize()
 328
 replaced by <code>getItemCount()</code>
+getItemCount()
 329
 replaced by {@code setBounds(int, int, int, int)}
+setBounds(int, int, int, int)
 330
 replaced by {@link #setVisible(boolean)}
+#setVisible(boolean)
 331
 replaced by {@link #setVisible(boolean)}
+#setVisible(boolean)
 332
 replaced by {@code dispatchEvent(AWTEvent)}
+dispatchEvent(AWTEvent)
 333
 {@link Component#applyComponentOrientation Component.applyComponentOrientation}
+Component#applyComponentOrientation
 334
 {@link Component#applyComponentOrientation Component.applyComponentOrientation}
+Component#applyComponentOrientation
 335
 replaced by <code>preConcatenateTransform(AffineTransform)</code>
+preConcatenateTransform(AffineTransform)
 336
 replaced by <code>concatenateTransform(AffineTransform)</code>
+concatenateTransform(AffineTransform)
 338
 replaced by <code>setEchoChar(char)</code>
+setEchoChar(char)
 339
 replaced by <code>getPreferredSize(int)</code>
+getPreferredSize(int)
 340
 replaced by <code>getPreferredSize()</code>
+getPreferredSize()
 341
 replaced by <code>getMinimumSize(int)</code>
+getMinimumSize(int)
 342
 replaced by <code>getMinimumSize()</code>
+getMinimumSize()
 344
 replaced by {@link #dispatchEvent(AWTEvent) dispatchEvent}
+#dispatchEvent(AWTEvent)
 345
 replaced by dispatchEvent(AWTEvent)
+dispatchEvent(AWTEvent)
 346
 replaced by <code>getMenuCount()</code>
+getMenuCount()
 347
 replaced by <code>insert(String, int)</code>
+insert(String, int)
 348
 replaced by <code>append(String)</code>
+append(String)
 349
 replaced by <code>replaceRange(String, int, int)</code>
+replaceRange(String, int, int)
 350
 replaced by <code>getPreferredSize(int, int)</code>
+getPreferredSize(int, int)
 351
 replaced by <code>getPreferredSize()</code>
+getPreferredSize()
 352
 replaced by <code>getMinimumSize(int, int)</code>
+getMinimumSize(int, int)
 353
 replaced by <code>getMinimumSize()</code>
+getMinimumSize()
 354
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 355
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 356
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 357
 replaced by <code>getClipBounds()</code>
+getClipBounds()
 358
 replaced by <code>getBounds()</code>
+getBounds()
 359
 replaced by <code>contains(int, int)</code>
+contains(int, int)
 360
 replaced by <code>boolean isDisplayable()</code>
+isDisplayable()
 361
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 362
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 363
 replaced by <code>setEnabled(boolean)</code>
+setEnabled(boolean)
 364
 replaced by <code>setVisible(boolean)</code>
+setVisible(boolean)
 365
 replaced by <code>setVisible(boolean)</code>
+setVisible(boolean)
 366
 replaced by <code>setVisible(boolean)</code>
+setVisible(boolean)
 367
 replaced by <code>getLocation()</code>
+getLocation()
 368
 replaced by <code>setLocation(int, int)</code>
+setLocation(int, int)
 369
 replaced by <code>getSize()</code>
+getSize()
 370
 replaced by <code>setSize(int, int)</code>
+setSize(int, int)
 371
 replaced by <code>setSize(Dimension)</code>
+setSize(Dimension)
 372
 replaced by <code>getBounds()</code>
+getBounds()
 373
 replaced by <code>setBounds(int, int, int, int)</code>
+setBounds(int, int, int, int)
 374
 replaced by <code>getPreferredSize()</code>
+getPreferredSize()
 375
 replaced by <code>getMinimumSize()</code>
+getMinimumSize()
 376
 replaced by <code>doLayout()</code>
+doLayout()
 377
 replaced by contains(int, int)
+contains(int, int)
 378
 replaced by getComponentAt(int, int)
+getComponentAt(int, int)
 379
 replaced by <code>dispatchEvent(AWTEvent e)</code>
+dispatchEvent(AWTEvent)
 380
 replaced by dispatchEvent(AWTEvent)
+dispatchEvent(AWTEvent)
 381
 replaced by processEvent(AWTEvent)
+processEvent(AWTEvent)
 382
 replaced by processMouseEvent(MouseEvent)
+processMouseEvent(MouseEvent)
 383
 replaced by processMouseMotionEvent(MouseEvent)
+processMouseMotionEvent(MouseEvent)
 384
 replaced by processMouseEvent(MouseEvent)
+processMouseEvent(MouseEvent)
 385
 replaced by processMouseMotionEvent(MouseEvent)
+processMouseMotionEvent(MouseEvent)
 386
 replaced by processMouseEvent(MouseEvent)
+processMouseEvent(MouseEvent)
 387
 replaced by processMouseEvent(MouseEvent)
+processMouseEvent(MouseEvent)
 388
 replaced by processKeyEvent(KeyEvent)
+processKeyEvent(KeyEvent)
 389
 replaced by processKeyEvent(KeyEvent)
+processKeyEvent(KeyEvent)
 391
 replaced by processFocusEvent(FocusEvent)
+processFocusEvent(FocusEvent)
 392
 replaced by processFocusEvent(FocusEvent)
+processFocusEvent(FocusEvent)
 393
 replaced by <code>isFocusable()</code>
+isFocusable()
 394
 replaced by transferFocus()
+transferFocus()
 395
 replaced by <code>getVisibleAmount()</code>
+getVisibleAmount()
 396
 replaced by <code>setUnitIncrement(int)</code>
+setUnitIncrement(int)
 397
 replaced by <code>getUnitIncrement()</code>
+getUnitIncrement()
 398
 replaced by <code>setBlockIncrement()</code>
+setBlockIncrement()
 399
 replaced by <code>getBlockIncrement()</code>
+getBlockIncrement()
 400
 see java.awt.GraphicsEnvironment#getAllFonts
+java.awt.GraphicsEnvironment#getAllFonts
 401
 see {@link java.awt.GraphicsEnvironment#getAvailableFontFamilyNames()}
+java.awt.GraphicsEnvironment#getAvailableFontFamilyNames()
 402
 replaced by the <code>Font</code> method <code>getLineMetrics</code>
+Font#getLineMetrics
 403
 replaced by <code>getSelectedCheckbox()</code>
+getSelectedCheckbox()
 404
 replaced by <code>setSelectedCheckbox(Checkbox)</code>
+setSelectedCheckbox(Checkbox)
 405
 replaced by <code>addLayoutComponent(Component, Object)</code>
+addLayoutComponent(Component, Object)
 406
 replaced by <code>doLayout()</code>
+doLayout()
 407
 replaced by <code>getItemCount()</code>
+getItemCount()
 408
 use <code>isMimeTypeEqual(String)</code>
+isMimeTypeEqual(String)
 411
 replaced by getComponentCount()
+getComponentCount()
 412
 replaced by <code>getInsets()</code>
+getInsets()
 413
 replaced by <code>doLayout()</code>
+doLayout()
 414
 replaced by <code>getPreferredSize()</code>
+getPreferredSize()
 415
 replaced by <code>getMinimumSize()</code>
+getMinimumSize()
 416
 replaced by <code>dispatchEvent(AWTEvent e)</code>
+dispatchEvent(AWTEvent)
 417
 replaced by <code>getComponentAt(int, int)</code>
+getComponentAt(int, int)
 418
 replaced by <code>addLayoutComponent(Component, Object)</code>
+addLayoutComponent(Component, Object)
 419
 replaced by <code>setBounds(int, int, int, int)</code>
+setBounds(int, int, int, int)
 420
 replaced by <code>setLocation(int, int)</code>
+setLocation(int, int)
 421
 replaced by <code>setSize(int, int)</code>
+setSize(int, int)
 422
 replaced by <code>contains(int, int)</code>
+contains(int, int)
 424
 use {@link #getOrientation(java.util.Locale)}
+#getOrientation(java.util.Locale)

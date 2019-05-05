@@ -19,6 +19,25 @@ public class JDKDeprecatedAPI {
     private String rReturnType;
     private String rMethodArgs;
     private String rInvoker;
+    private Integer type;
+    private String qualifiedSignature;
+    private String replace;
+
+    public String getQualifiedSignature() {
+        return qualifiedSignature;
+    }
+
+    public void setQualifiedSignature(String qualifiedSignature) {
+        this.qualifiedSignature = qualifiedSignature;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getId() {
         return id;
@@ -138,6 +157,14 @@ public class JDKDeprecatedAPI {
 
     public void setrInvoker(String rInvoker) {
         this.rInvoker = rInvoker;
+    }
+
+    public String getReplace() {
+        return replace;
+    }
+
+    public void setReplace(String replace) {
+        this.replace = replace;
     }
 
     @Override

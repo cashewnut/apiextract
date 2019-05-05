@@ -23,7 +23,7 @@ public class JDKDeprecatedAPIService implements IJDKDeprecatedAPIService {
 
     @Override
     public void updateById(JDKDeprecatedAPI jdkDeprecatedAPI) {
-        dao.insert(jdkDeprecatedAPI);
+        dao.updateById(jdkDeprecatedAPI);
     }
 
     @Override
@@ -34,5 +34,16 @@ public class JDKDeprecatedAPIService implements IJDKDeprecatedAPIService {
     @Override
     public void updateArgs(JDKDeprecatedAPI jdkDeprecatedAPI, String args) {
         dao.updateArgs(jdkDeprecatedAPI, args);
+    }
+
+    @Override
+    public JDKDeprecatedAPI get(JDKDeprecatedAPI jdkDeprecatedAPI) {
+        JDKDeprecatedAPI api = dao.get(jdkDeprecatedAPI);
+        if (api == null && jdkDeprecatedAPI.getMethodReturnType().contains(".")) {
+            String[] types = jdkDeprecatedAPI.getMethodReturnType().split("[.]");
+            jdkDeprecatedAPI.setMethodReturnType(types[types.length - 1]);
+            api = dao.get(jdkDeprecatedAPI);
+        }
+        return api;
     }
 }

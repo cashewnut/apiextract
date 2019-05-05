@@ -37,7 +37,9 @@ public class Database {
         for (int i = 0; i < regexs.size(); i++) {
             int id = Integer.parseInt(regexs.get(i));
             JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(id - 1);
-            api.setReplacedComment(regexs.get(++i));
+            i++;
+            api.setQualifiedSignature(regexs.get(++i));
+            //api.setReplacedComment(regexs.get(++i));
         }
 
         service.updateById(jdkDeprecatedAPIS);

@@ -16,4 +16,6 @@ public interface IJDKDeprecatedAPIService {
 
     void updateArgs(JDKDeprecatedAPI jdkDeprecatedAPI,String args);
 
+    JDKDeprecatedAPI get(JDKDeprecatedAPI jdkDeprecatedAPI);
+
 }

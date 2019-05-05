@@ -74,6 +74,9 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
                 api.setrReturnType(rs.getString(13));
                 api.setrMethodArgs(rs.getString(14));
                 api.setrInvoker(rs.getString(15));
+                api.setType(rs.getInt(16));
+                api.setQualifiedSignature(rs.getString(17));
+                api.setReplace(rs.getString(18));
                 jdkDeprecatedAPIS.add(api);
             }
         } catch (Exception e) {
@@ -88,7 +91,36 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
 
     @Override
     public void updateById(JDKDeprecatedAPI jdkDeprecatedAPI) {
-
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, jdkDeprecatedAPI.getPackageName());
+            preparedStatement.setString(2, jdkDeprecatedAPI.getClassName());
+            preparedStatement.setString(3, jdkDeprecatedAPI.getMethodName());
+            preparedStatement.setString(4, jdkDeprecatedAPI.getMethodReturnType());
+            preparedStatement.setString(5, jdkDeprecatedAPI.getMethodArgs());
+            preparedStatement.setString(6, jdkDeprecatedAPI.getComment());
+            preparedStatement.setInt(7, jdkDeprecatedAPI.getLine());
+            preparedStatement.setString(8, jdkDeprecatedAPI.getReplacedComment());
+            preparedStatement.setString(9, jdkDeprecatedAPI.getrPackageName());
+            preparedStatement.setString(10, jdkDeprecatedAPI.getrClassName());
+            preparedStatement.setString(11, jdkDeprecatedAPI.getrMethodName());
+            preparedStatement.setString(12, jdkDeprecatedAPI.getrReturnType());
+            preparedStatement.setString(13, jdkDeprecatedAPI.getrMethodArgs());
+            preparedStatement.setString(14, jdkDeprecatedAPI.getrInvoker());
+            preparedStatement.setInt(15, jdkDeprecatedAPI.getType());
+            preparedStatement.setString(16, jdkDeprecatedAPI.getQualifiedSignature());
+            preparedStatement.setString(17,jdkDeprecatedAPI.getReplace());
+            preparedStatement.setInt(18, jdkDeprecatedAPI.getId());
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closePreparedStatement(preparedStatement);
+            DBUtil.closeConnection(connection);
+        }
     }
 
     @Override
@@ -107,7 +139,16 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
                 preparedStatement.setString(6, api.getComment());
                 preparedStatement.setInt(7, api.getLine());
                 preparedStatement.setString(8, api.getReplacedComment());
-                preparedStatement.setInt(9, api.getId());
+                preparedStatement.setString(9, api.getrPackageName());
+                preparedStatement.setString(10, api.getrClassName());
+                preparedStatement.setString(11, api.getrMethodName());
+                preparedStatement.setString(12, api.getrReturnType());
+                preparedStatement.setString(13, api.getrMethodArgs());
+                preparedStatement.setString(14, api.getrInvoker());
+                preparedStatement.setInt(15, api.getType());
+                preparedStatement.setString(16, api.getQualifiedSignature());
+                preparedStatement.setString(17,api.getReplace());
+                preparedStatement.setInt(18, api.getId());
                 preparedStatement.execute();
             }
         } catch (Exception e) {
@@ -120,17 +161,44 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
 
     @Override
     public JDKDeprecatedAPI get(JDKDeprecatedAPI jdkDeprecatedAPI) {
-        JDKDeprecatedAPI res = null;
+        JDKDeprecatedAPI api = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
-
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(GETBYDAPI);
+            preparedStatement.setString(1, jdkDeprecatedAPI.getPackageName());
+            preparedStatement.setString(2, jdkDeprecatedAPI.getClassName());
+            preparedStatement.setString(3, jdkDeprecatedAPI.getMethodName());
+            preparedStatement.setString(4, jdkDeprecatedAPI.getMethodReturnType());
+            preparedStatement.setString(5, jdkDeprecatedAPI.getMethodArgs());
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                api = new JDKDeprecatedAPI();
+                api.setId(rs.getInt(1));
+                api.setPackageName(rs.getString(2));
+                api.setClassName(rs.getString(3));
+                api.setMethodName(rs.getString(4));
+                api.setMethodReturnType(rs.getString(5));
+                api.setMethodArgs(rs.getString(6));
+                api.setComment(rs.getString(7));
+                api.setLine(rs.getInt(8));
+                api.setReplacedComment(rs.getString(9));
+                api.setrPackageName(rs.getString(10));
+                api.setrClassName(rs.getString(11));
+                api.setrMethodName(rs.getString(12));
+                api.setrReturnType(rs.getString(13));
+                api.setrMethodArgs(rs.getString(14));
+                api.setrInvoker(rs.getString(15));
+                api.setType(rs.getInt(16));
+                api.setQualifiedSignature(rs.getString(17));
+                api.setReplace(rs.getString(18));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return res;
+        return api;
     }
 
     @Override
@@ -149,7 +217,7 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DBUtil.closePreparedStatement(preparedStatement);
             DBUtil.closeConnection(connection);
         }

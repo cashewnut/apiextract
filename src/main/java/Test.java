@@ -58,17 +58,17 @@ public class Test {
         //String str =
 
         //输出文件
-        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
-            JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(i);
-            StringBuilder sb = new StringBuilder();
-            sb.append("<No.").append(api.getId()).append(">\n");
-            sb.append(api.getComment()).append("\n");
-            sb.append(api.getPackageName()).append(".").append(api.getClassName()).append(".");
-            sb.append(api.getMethodName()).append("(").append(api.getMethodArgs()).append(")  ").append("line : ").append(api.getLine());
-            sb.append("\n\n").append(api.getReplacedComment());
-            sb.append("\n\n-----------------------------\n");
-            FileUtil.write("/Users/xiyaoguo/Desktop/deprecated_api_list", sb.toString());
-        }
+//        for (int i = 0; i < jdkDeprecatedAPIS.size(); i++) {
+//            JDKDeprecatedAPI api = jdkDeprecatedAPIS.get(i);
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("<No.").append(api.getId()).append(">\n");
+//            sb.append(api.getComment()).append("\n");
+//            sb.append(api.getPackageName()).append(".").append(api.getClassName()).append(".");
+//            sb.append(api.getMethodName()).append("(").append(api.getMethodArgs()).append(")  ").append("line : ").append(api.getLine());
+//            sb.append("\n\n").append(api.getReplacedComment());
+//            sb.append("\n\n-----------------------------\n");
+//            FileUtil.write("/Users/xiyaoguo/Desktop/deprecated_api_list", sb.toString());
+//        }
 
 
     }
