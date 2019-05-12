@@ -1,4 +1,4 @@
-package pers.xyy.deprecatedapi.jdk;
+package pers.xyy.deprecatedapi.jdk.tools.replace;
 
 import com.alibaba.fastjson.JSON;
 import com.github.javaparser.ast.Node;
@@ -9,10 +9,10 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
-import pers.xyy.deprecatedapi.jdk.model.Args;
+import pers.xyy.deprecatedapi.jdk.tools.replace.model.Args;
 import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
-import pers.xyy.deprecatedapi.jdk.model.Method;
-import pers.xyy.deprecatedapi.jdk.model.Replace;
+import pers.xyy.deprecatedapi.jdk.tools.replace.model.Method;
+import pers.xyy.deprecatedapi.jdk.tools.replace.model.Replace;
 import pers.xyy.deprecatedapi.jdk.service.IJDKDeprecatedAPIService;
 import pers.xyy.deprecatedapi.jdk.service.impl.JDKDeprecatedAPIService;
 

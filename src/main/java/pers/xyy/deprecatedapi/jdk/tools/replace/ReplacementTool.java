@@ -1,4 +1,4 @@
-package pers.xyy.deprecatedapi.jdk;
+package pers.xyy.deprecatedapi.jdk.tools.replace;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;

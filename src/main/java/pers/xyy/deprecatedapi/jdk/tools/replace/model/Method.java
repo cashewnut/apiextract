@@ -1,4 +1,4 @@
-package pers.xyy.deprecatedapi.jdk.model;
+package pers.xyy.deprecatedapi.jdk.tools.replace.model;
 
 import java.util.List;
 

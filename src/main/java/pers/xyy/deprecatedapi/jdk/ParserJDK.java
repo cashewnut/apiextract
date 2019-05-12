@@ -45,7 +45,7 @@ public class ParserJDK {
         CompilationUnit cu = FileUtil.openCU(path);
         System.out.println(">>>>>>>>" + path);
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk5")));
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
@@ -67,7 +67,7 @@ public class ParserJDK {
             if (md.getBegin().isPresent())
                 api.setLine(md.getBegin().get().line);
             System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            service.saveJDKDeprecatedAPI(api);
+            //service.saveJDKDeprecatedAPI(api);
         }
 
     }
@@ -93,41 +93,42 @@ public class ParserJDK {
         }
     }
 
-    public void parserFile(String path) {
+    public int parserFile(String path) {
         CompilationUnit cu = FileUtil.openCU(path);
         System.out.println(">>>>>>>>" + path);
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JavaParserTypeSolver(new File("/home/fdse/xyy/jdk5")));
+        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
         List<MethodDeclaration> mds = new ArrayList<>();
         VoidVisitor<List<MethodDeclaration>> visitor = new DeprecatedAPIVisitor();
         visitor.visit(cu, mds);
+        return mds.size();
 
-        for (MethodDeclaration md : mds) {
-            if(md.getNameAsString().equals("setThreshold"))
-                continue;
-            JDKDeprecatedAPI api = new JDKDeprecatedAPI();
-            api.setPackageName(md.resolve().getPackageName());
-            api.setClassName(md.resolve().getClassName());
-            api.setMethodReturnType(md.getType().toString());
-            api.setMethodName(md.getNameAsString());
-            String args = md.getParameters().stream().map(p -> p.getType().asString()).collect(Collectors.joining(","));
-            api.setMethodArgs(args);
-            System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            String rArgs = "";
-            for (int i = 0; i < md.resolve().getNumberOfParams(); i++)
-                rArgs = rArgs + md.resolve().getParam(i).describeType() + ",";
-            if (rArgs.endsWith(","))
-                rArgs = rArgs.substring(0, rArgs.length() - 1);
-            service.updateArgs(api, rArgs);
-        }
+//        for (MethodDeclaration md : mds) {
+//            if(md.getNameAsString().equals("setThreshold"))
+//                continue;
+//            JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+//            api.setPackageName(md.resolve().getPackageName());
+//            api.setClassName(md.resolve().getClassName());
+//            api.setMethodReturnType(md.getType().toString());
+//            api.setMethodName(md.getNameAsString());
+//            String args = md.getParameters().stream().map(p -> p.getType().asString()).collect(Collectors.joining(","));
+//            api.setMethodArgs(args);
+//            System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
+//            String rArgs = "";
+//            for (int i = 0; i < md.resolve().getNumberOfParams(); i++)
+//                rArgs = rArgs + md.resolve().getParam(i).describeType() + ",";
+//            if (rArgs.endsWith(","))
+//                rArgs = rArgs.substring(0, rArgs.length() - 1);
+//            service.updateArgs(api, rArgs);
+//        }
 
     }
 
     public static void main(String[] args) {
-        //new ParserJDK().parseFile("/Users/xiyaoguo/Desktop/Assert.java");
+        //new ParserJDK().parseFile("/Users/xiyaoguo/Desktop/src/java/util/Date.java");
     }
 
 

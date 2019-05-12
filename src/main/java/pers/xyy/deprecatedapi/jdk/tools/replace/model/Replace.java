@@ -1,9 +1,7 @@
-package pers.xyy.deprecatedapi.jdk.model;
+package pers.xyy.deprecatedapi.jdk.tools.replace.model;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Replace {

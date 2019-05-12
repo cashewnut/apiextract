@@ -10,14 +10,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File root = new File("/home/fdse/xyy/jdk8");
+        File root = new File("/Users/xiyaoguo/Desktop/jdk8");
         List<String> javaFilePath;
+        int res = 0;
         for(File f : Objects.requireNonNull(root.listFiles())){
             javaFilePath = FileUtil.getJavaFilePath(f);
             for(String path : javaFilePath){
-                new ParserJDK().parserFile(path);
+                res +=new ParserJDK().parserFile(path);
             }
         }
+        System.out.println(res);
 
 
     }
