@@ -55,7 +55,7 @@ public class ProjectStudy {
                     if (isDeprecated(我现在就要用中文命名这个变量名以表示我现在多郁闷))
                         count++;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -83,8 +83,8 @@ public class ProjectStudy {
             }
 
             for (JDKDeprecatedAPI api : candidates) {
-                if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","),params.split(","))) {
-                    System.out.println(api.getId());
+                if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
+                    FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
                     return true;
                 }
 
@@ -114,7 +114,7 @@ public class ProjectStudy {
     }
 
     public static void main(String[] args) {
-        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/openjdk-jdk-jdk");
+        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
         System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
         System.out.println("count : " + projectStudy.invokeCount());
 
