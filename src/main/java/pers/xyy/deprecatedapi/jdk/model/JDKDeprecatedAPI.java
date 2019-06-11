@@ -22,6 +22,8 @@ public class JDKDeprecatedAPI {
     private Integer type;
     private String qualifiedSignature;
     private String replace;
+    private int featureType;
+    private int confidenceType;
 
     public String getQualifiedSignature() {
         return qualifiedSignature;
@@ -165,6 +167,22 @@ public class JDKDeprecatedAPI {
 
     public void setReplace(String replace) {
         this.replace = replace;
+    }
+
+    public int getFeatureType() {
+        return featureType;
+    }
+
+    public void setFeatureType(int featureType) {
+        this.featureType = featureType;
+    }
+
+    public int getConfidenceType() {
+        return confidenceType;
+    }
+
+    public void setConfidenceType(int confidenceType) {
+        this.confidenceType = confidenceType;
     }
 
     @Override

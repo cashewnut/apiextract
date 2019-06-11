@@ -68,29 +68,30 @@ public class APIClassifyTool {
 
     public void classify() {
         List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
-        int noReplace = 0;
-        Map<Integer, Integer> map = new HashMap<>();
+//        int noReplace = 0;
+//        Map<Integer, Integer> map = new HashMap<>();
 //        Map<Integer, List<Integer>> idsMap = new HashMap<>();
-        List<Integer> ids = new ArrayList<>();
+//        List<Integer> ids = new ArrayList<>();
         for (JDKDeprecatedAPI api : apis) {
             if (api.getrPackageName() == null) {
-                noReplace++;
                 continue;
             }
             System.out.print("id : " + api.getId());
             int type = type(api);
             System.out.println(", type : " + type);
-            map.put(type, map.getOrDefault(type, 0) + 1);
-            if(type%10 == 2){
-                ids.add(api.getId());
-            }
+            api.setConfidenceType(type / 10);
+            api.setFeatureType(type % 10);
+            service.updateById(api);
+//            map.put(type, map.getOrDefault(type, 0) + 1);
+//            if(type%10 == 2){
+//                ids.add(api.getId());
+//            }
         }
 //        System.out.println(424 - noReplace);
 //        for (Integer type : map.keySet()) {
 //            System.out.println("type : " + type + ", count : " + map.get(type));
 //        }
 //        System.out.println("total : " + (424 - noReplace));
-        ids.forEach(System.out::println);
     }
 
     private int type(JDKDeprecatedAPI api) {

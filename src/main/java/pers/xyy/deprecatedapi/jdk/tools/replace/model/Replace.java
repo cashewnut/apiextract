@@ -2,6 +2,7 @@ package pers.xyy.deprecatedapi.jdk.tools.replace.model;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Replace {
@@ -9,6 +10,8 @@ public class Replace {
     private List<Method> methods;
     private List<String> operations;
     private String comment;
+    private List<String> comments;
+    private Integer confidence;
 
     public List<Method> getMethods() {
         return methods;
@@ -32,6 +35,24 @@ public class Replace {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void addComment(String comment) {
+        if (comments == null)
+            comments = new ArrayList<>();
+        comments.add(comment);
+    }
+
+    public Integer getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(Integer confidence) {
+        this.confidence = confidence;
     }
 
     public static void main(String[] args) {

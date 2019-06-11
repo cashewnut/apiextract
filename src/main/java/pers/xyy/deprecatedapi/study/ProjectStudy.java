@@ -83,8 +83,10 @@ public class ProjectStudy {
             }
 
             for (JDKDeprecatedAPI api : candidates) {
+                if (api.getType() == 0)
+                    continue;
                 if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
-                    FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
+                    //FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
                     return true;
                 }
 
@@ -114,7 +116,7 @@ public class ProjectStudy {
     }
 
     public static void main(String[] args) {
-        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
+        ProjectStudy projectStudy = new ProjectStudy("/Users/xiyaoguo/Downloads/pdfbox-trunk");
         System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
         System.out.println("count : " + projectStudy.invokeCount());
 

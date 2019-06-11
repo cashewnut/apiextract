@@ -79,6 +79,8 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
                 api.setType(rs.getInt(16));
                 api.setQualifiedSignature(rs.getString(17));
                 api.setReplace(rs.getString(18));
+                api.setFeatureType(rs.getInt(19));
+                api.setConfidenceType(rs.getInt(20));
                 jdkDeprecatedAPIS.add(api);
             }
         } catch (Exception e) {
@@ -115,7 +117,9 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             preparedStatement.setInt(15, jdkDeprecatedAPI.getType());
             preparedStatement.setString(16, jdkDeprecatedAPI.getQualifiedSignature());
             preparedStatement.setString(17, jdkDeprecatedAPI.getReplace());
-            preparedStatement.setInt(18, jdkDeprecatedAPI.getId());
+            preparedStatement.setInt(18,jdkDeprecatedAPI.getFeatureType());
+            preparedStatement.setInt(19,jdkDeprecatedAPI.getConfidenceType());
+            preparedStatement.setInt(20, jdkDeprecatedAPI.getId());
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
