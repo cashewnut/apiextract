@@ -18,4 +18,8 @@ public interface IJDKDeprecatedAPIService {
 
     JDKDeprecatedAPI get(JDKDeprecatedAPI jdkDeprecatedAPI);
 
+    List<JDKDeprecatedAPI> getByReplaced(JDKDeprecatedAPI jdkDeprecatedAPI);
+
+    JDKDeprecatedAPI getById(int id);
+
 }

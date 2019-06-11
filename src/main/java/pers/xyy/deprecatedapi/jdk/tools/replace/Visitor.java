@@ -3,12 +3,16 @@ package pers.xyy.deprecatedapi.jdk.tools.replace;
 import com.alibaba.fastjson.JSON;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.comments.BlockComment;
+import com.github.javaparser.ast.comments.Comment;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import pers.xyy.deprecatedapi.jdk.tools.replace.model.Args;
 import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
 import pers.xyy.deprecatedapi.jdk.tools.replace.model.Method;
@@ -25,9 +29,10 @@ public class Visitor {
 
     public void replace(MethodCallExpr mc) {
         JDKDeprecatedAPI api = getApi(mc);
-        if (api == null)
+        if (api == null || api.getReplace() == null)
             return;
         Replace replace = JSON.parseObject(api.getReplace(), Replace.class);
+
         switch (api.getType()) {
             case 1:
                 replaceType1(mc, replace);
@@ -43,6 +48,11 @@ public class Visitor {
                 break;
             default:
                 break;
+        }
+
+        if (replace.getComment() != null) {
+            Node node = findStatement(mc);
+            node.setComment(new BlockComment(replace.getComment()));
         }
 
     }
@@ -93,9 +103,12 @@ public class Visitor {
 
         //scope
         if (methodDesc.getInvoker() != null) {
-            if (methodDesc.getRelated() == null || !methodDesc.getRelated())
-                mc.setScope(new NameExpr(methodDesc.getInvoker()));
-            else
+            if (methodDesc.getRelated() == null || !methodDesc.getRelated()) {
+                if (methodDesc.getInvoker().isEmpty())
+                    mc = mc.removeScope();
+                else
+                    mc.setScope(new NameExpr(placeArgsHolder(methodDesc.getInvoker(), mc)));
+            } else
                 mc.setScope(new NameExpr(placeArgsHolder(methodDesc.getInvoker(), mc)));
         }
         //name
@@ -148,6 +161,8 @@ public class Visitor {
             Args arg = argsDesc.get(i);
             if (arg.getRelated() == null || !arg.getRelated())
                 newArgs.add(new NameExpr(arg.getName()));
+            else if (arg.getName().contains("$invoker"))
+                newArgs.add(new NameExpr(arg.getName().replace("$invoker", mc.getScope().get().toString())));
             else if (arg.getOperations() == null || arg.getOperations().isEmpty()) {
                 int index = Integer.parseInt(arg.getName().replace("$dArgs", ""));
                 newArgs.add(oldArgs.get(index));
@@ -155,8 +170,8 @@ public class Visitor {
                 List<String> operations = arg.getOperations();
                 for (int j = 0; j < operations.size(); j++)
                     operations.set(j, placeArgsHolder(operations.get(j), mc));
-                if (operations.size() == 1) {
-                    newArgs.add(new NameExpr(operations.get(0).replace("$this = ", "")));
+                if (operations.size() == 1 && operations.get(0).startsWith("$this")) {
+                    newArgs.add(new NameExpr(placeArgsHolder(operations.get(0).replace("$this = ", ""), mc)));
                 } else {
                     /*
                       TODO 如果不是1的情况如何考虑
@@ -192,7 +207,7 @@ public class Visitor {
         for (int j = 0; j < operations.size(); j++) {
             String operation = operations.get(j);
             if (operation.contains("$this")) {
-                if (firstThis) {
+                if (firstThis && operation.startsWith("$this")) {
                     operations.set(j, operation.replace("$this", argType + " " + argName));
                     firstThis = false;
                 } else
@@ -231,22 +246,25 @@ public class Visitor {
             String str1 = origin.substring(0, i);
             int index = 0;
             i += 6;
-            while (Character.isDigit(origin.charAt(i))) {
+            while (i < origin.length() && Character.isDigit(origin.charAt(i))) {
                 index = index * 10 + (origin.charAt(i) - '0');
                 i++;
             }
             String str2 = origin.substring(i);
             origin = str1 + oldArgs.get(index) + str2;
         }
+        if (origin.contains("$invoker"))
+            origin = origin.replace("$invoker", mc.getScope().get().toString());
         return origin;
     }
 
     private JDKDeprecatedAPI getApi(MethodCallExpr mc) {
         JDKDeprecatedAPI api = new JDKDeprecatedAPI();
-        api.setPackageName(mc.resolveInvokedMethod().getPackageName());
-        api.setClassName(mc.resolveInvokedMethod().getClassName());
-        api.setMethodReturnType(mc.resolveInvokedMethod().getReturnType().describe());
-        api.setMethodName(mc.resolveInvokedMethod().getName());
+        ResolvedMethodDeclaration rmd = mc.resolveInvokedMethod();
+        api.setPackageName(rmd.getPackageName());
+        api.setClassName(rmd.getClassName());
+        api.setMethodReturnType(rmd.getReturnType().describe());
+        api.setMethodName(rmd.getName());
         String rArgs = "";
         for (int i = 0; i < mc.resolveInvokedMethod().getNumberOfParams(); i++)
             rArgs = rArgs + mc.resolveInvokedMethod().getParam(i).describeType() + ",";

@@ -1,3 +1,5 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
@@ -6,18 +8,16 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
 import pers.xyy.deprecatedapi.jdk.service.IJDKDeprecatedAPIService;
 import pers.xyy.deprecatedapi.jdk.service.impl.JDKDeprecatedAPIService;
+import pers.xyy.deprecatedapi.jdk.tools.replace.model.Method;
+import pers.xyy.deprecatedapi.jdk.tools.replace.model.Replace;
 import pers.xyy.deprecatedapi.utils.FileUtil;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 //正则表达式
-public class Database {
+public class Database2 {
 
     private static IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
 
@@ -59,21 +59,63 @@ public class Database {
         api.setrClassName("KeyboardFocusManager");
         //new Database().isBase(api);
 
-        new Database().classify();
+        new Database2().notice();
 
     }
 
     public void classify() {
         List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
         for (JDKDeprecatedAPI api : apis) {
-            if (api.getType() != 0 || api.getrClassName() == null)
+            if (api.getType() != 0 && api.getType() != 2 || api.getrClassName() == null)
                 continue;
             System.out.println(api.getId());
-            if (api.getClassName().equals(api.getrClassName()))
-                api.setType(2);
-            else if (isBase(api))
-                api.setType(2);
+            if ((api.getClassName().equals(api.getrClassName()) || isBase(api)) && typeEquals(api.getMethodArgs().split(","), api.getrMethodArgs().split(","))) {
+                api.setType(1);
+                System.out.println("type1 : " + api.getId());
+            }
 
+        }
+        service.updateById(apis);
+    }
+
+    public void format() {
+        List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
+        for (JDKDeprecatedAPI api : apis) {
+            if (api.getReplace() == null)
+                continue;
+            System.out.println(api.getId());
+            api.setReplace(JSON.toJSONString(JSONObject.parseObject(api.getReplace(), Replace.class)));
+        }
+        service.updateById(apis);
+    }
+
+    //添加返回值不同的提示
+    public void notice() {
+        List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
+        for (JDKDeprecatedAPI api : apis) {
+            if (api.getMethodReturnType() == null || api.getrReturnType() == null)
+                continue;
+            if (api.getType() == 1) {
+                Replace replace = new Replace();
+                replace.setOperations(Collections.singletonList("$m0"));
+                Method method = new Method();
+                method.setName(api.getrMethodName());
+                replace.setMethods(Collections.singletonList(method));
+                if (!typeEquals(api.getMethodReturnType(), api.getrReturnType()))
+                    replace.setComment("Deprecated and replaced methods have different return values.");
+                api.setReplace(JSON.toJSONString(replace));
+            } else {
+                if (api.getReplace() != null) {
+                    Replace replace = JSONObject.parseObject(api.getReplace(), Replace.class);
+                    if (!typeEquals(api.getMethodReturnType(), api.getrReturnType())) {
+                        if (replace.getComment() == null)
+                            replace.setComment("Deprecated and replaced methods have different return values.");
+                        else
+                            replace.setComment("Deprecated and replaced methods have different return values.\n" + replace.getComment());
+                    }
+                    api.setReplace(JSON.toJSONString(replace));
+                }
+            }
         }
         service.updateById(apis);
     }
@@ -125,6 +167,42 @@ public class Database {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private boolean typeEquals(String[] l1, String[] l2) {
+        if (l1.length != l2.length)
+            return false;
+        boolean res = true;
+        for (int i = 0; i < l1.length; i++) {
+            String args1 = l1[i];
+            String args2 = l2[i];
+            res &= typeEquals(args1, args2);
+        }
+        return res;
+    }
+
+    private boolean typeEquals(String str1, String str2) {
+        if (str1.isEmpty() && str2.isEmpty())
+            return true;
+        if (str1.isEmpty() || str2.isEmpty())
+            return false;
+
+        //TODO 判断两个类是否是父子类，暂时写死，有时间重新写
+        Map<String, Set<String>> map = new HashMap<>();
+        map.put("JComponent", new HashSet<>(Arrays.asList("JMenuBar", "JScrollPane")));
+        String[] str1s = str1.split("\\.");
+        String[] str2s = str2.split("\\.");
+        String s1 = str1s[str1s.length - 1], s2 = str2s[str2s.length - 1];
+        if (s1.equals(s2))
+            return true;
+        if (map.containsKey(s1)) {
+            if (map.get(s1).contains(s2))
+                return true;
+        }
+        if (map.containsKey(s2)) {
+            return map.get(s2).contains(s1);
+        }
+        return false;
     }
 
 }

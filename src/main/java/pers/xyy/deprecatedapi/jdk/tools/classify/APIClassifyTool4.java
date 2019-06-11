@@ -29,14 +29,14 @@ import java.util.stream.Collectors;
  * 转移：R_API在JDK7中已经出现，对于D_API的替换只是进行转移操作。
  * 非转移：R_API在JDK7中没有出现，在JDK8中才出现。
  * 1、API去重/替换。
- * 2、参数变更。
- * 3、开放/扩展参数。
- * 4、缩减/关闭参数。
- * 5、参数整合(转移)。
- * 6、API整合(转移)。
- * 7、API拆解(转移)。
+ * 2、开放/扩展参数。
+ * 3、缩减/关闭参数。
+ * 4、参数整合(转移)。
+ * 5、API整合(转移)。
+ * 6、API拆解(转移)。
+ * 7、其他。
  */
-public class APIClassifyTool {
+public class APIClassifyTool4 {
 
     public static IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
     private final static float threshold = Float.parseFloat(LoadProperties.get("API_EQUALS_THRESHOLD"));
@@ -48,117 +48,72 @@ public class APIClassifyTool {
     private final static Set<Integer> openArgs = Arrays.stream(LoadProperties.get("OPEN_ARGS").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
     private final static Set<Integer> notFound = Arrays.stream(LoadProperties.get("NOT_FOUND").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
 
-    private final static Set<Integer> SET_INTERFACE = Arrays.stream(LoadProperties.get("SET_INTERFACE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_API_SPLIT = Arrays.stream(LoadProperties.get("SET_API_SPLIT").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_HIGH_CONFIDENCE = Arrays.stream(LoadProperties.get("SET_HIGH_CONFIDENCE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_LOW_CONFIDENCE = Arrays.stream(LoadProperties.get("SET_LOW_CONFIDENCE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-
     public static void main(String[] args) {
 
         TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
-        APIClassifyTool tool = new APIClassifyTool();
-//        System.out.println(tool.params("JTable","java.awt.Component,String"));
+
+        APIClassifyTool4 tool = new APIClassifyTool4();
+//        for (int id : Arrays.stream("16,17,19,128,129,313,314,330,331,356,360,361,363,364,366,405,418".split(",")).map(Integer::parseInt).collect(Collectors.toList())) {
+//            //for (int id : Arrays.stream("128".split(",")).map(Integer::parseInt).collect(Collectors.toList())) {
+//            JDKDeprecatedAPI api = service.getById(id);
+//            Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
+//            Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
+//            System.out.println("id : " + id + ", ret : " + tool.isRInvokeD(rAPI, dAPI));
+//        }
         tool.classify();
 
+
+        /*APIClassifyTool4 tool = new APIClassifyTool4();
+        Method dAPI = new Method("java.awt", "Component", "enable", "void", "");
+        Method rAPI = new Method("java.awt", "Component", "setEnabled", "void", "boolean");
+        System.out.println(tool.isRInvokeD(rAPI, dAPI));
+        JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+        api.setrPackageName("java.awt");
+        api.setrClassName("Component");
+        api.setrMethodName("setEnabled");
+        api.setrReturnType("void");
+        api.setrMethodArgs("boolean");
+        System.out.println(tool.isCompactAPI(api));
+        MethodDeclaration md = tool.getMDFromCU(FileUtil.openCU(tool.toURL("java.awt", "Component")), "enable", "void", "");
+        System.out.println(md.getTypeAsString());*/
 
     }
 
     public void classify() {
         List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
+        int count = 0;
         int noReplace = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-//        Map<Integer, List<Integer>> idsMap = new HashMap<>();
-        List<Integer> ids = new ArrayList<>();
+        int[] nums = new int[9];
         for (JDKDeprecatedAPI api : apis) {
+//            if (api.getId() != 79)
+//                continue;
+            Set<Integer> splitAPI = new HashSet<>(Arrays.asList(15, 93, 285));
+            if (splitAPI.contains(api.getId())) {
+                System.out.println("id : " + api.getId() + ", type : " + 61);
+                nums[6]++;
+                continue;
+            }
             if (api.getrPackageName() == null) {
                 noReplace++;
                 continue;
             }
             System.out.print("id : " + api.getId());
             int type = type(api);
+            nums[type / 10]++;
+
             System.out.println(", type : " + type);
-            map.put(type, map.getOrDefault(type, 0) + 1);
-            if(type%10 == 2){
-                ids.add(api.getId());
-            }
+
+
         }
-//        System.out.println(424 - noReplace);
-//        for (Integer type : map.keySet()) {
-//            System.out.println("type : " + type + ", count : " + map.get(type));
-//        }
-//        System.out.println("total : " + (424 - noReplace));
-        ids.forEach(System.out::println);
+
+        Arrays.stream(nums).forEach(System.out::println);
+        System.out.println(424 - noReplace);
     }
 
     private int type(JDKDeprecatedAPI api) {
-        Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
-        Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
-        int type = 0;
-        if (SET_API_SPLIT.contains(api.getId())) {
-            type = 7;
-        } else if (!typeEquals(dAPI.getReturnType(), rAPI.getReturnType())) {
-            type = 8;
-        } else if (isCompactAPI(api)) {
-            type = 6;
-        }
-        if (SET_INTERFACE.contains(api.getId())) {
-            if (type == 0) {
-                type = params(api.getMethodArgs(), api.getrMethodArgs());
-            }
-            type += 30;
-        } else if (SET_HIGH_CONFIDENCE.contains(api.getId())) {
-            if (type == 0) {
-                if (compactArgs.contains(api.getId())) {
-                    type = 5;
-                } else {
-                    type = params(api.getMethodArgs(), api.getrMethodArgs());
-                }
-            }
-            type += 10;
-        } else if (SET_LOW_CONFIDENCE.contains(api.getId())) {
-            if (type == 0) {
-                type = params(api.getMethodArgs(), api.getrMethodArgs());
-            }
-            type += 20;
-        }
-        return type;
-    }
-
-    /**
-     * @param dAPI
-     * @param rAPI
-     * @return 1:重复, 2:参数变更, 3:开放参数, 4:关闭参数
-     */
-    private int params(String dAPI, String rAPI) {
-        List<String> dAPIArgs = dAPI.isEmpty() ? new ArrayList<>() : Arrays.stream(dAPI.split(",")).collect(Collectors.toList());
-        List<String> rAPIArgs = rAPI.isEmpty() ? new ArrayList<>() : Arrays.stream(rAPI.split(",")).collect(Collectors.toList());
-        int index = 0;
-        while (index < dAPIArgs.size()) {
-            for (int i = 0; i < rAPIArgs.size(); i++) {
-                if (typeEquals(dAPIArgs.get(index), rAPIArgs.get(i))) {
-                    dAPIArgs.remove(index);
-                    rAPIArgs.remove(i);
-                    index--; //先减一，之后再加回来。
-                    break;
-                }
-            }
-            index++;
-        }
-        if (dAPIArgs.isEmpty() && rAPIArgs.isEmpty())
-            return 1;
-        if (!dAPIArgs.isEmpty() && !rAPIArgs.isEmpty())
-            return 2;
-        if (!rAPIArgs.isEmpty())
-            return 3;
-
-        return 4;
-    }
-
-
-    private int type1(JDKDeprecatedAPI api) {
         Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
         Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
         int transfer = isMethodExist(rAPI) ? 1 : 2;
@@ -184,7 +139,7 @@ public class APIClassifyTool {
                 type = 4;
             else if (isDuplicated(dAPI, rAPI)) {
 //                if (typeEquals(dAPI.getReturnType(), rAPI.getReturnType())) //如果返回值也相同，则返回1，返回值不同返回7。
-                type = 1;
+                    type = 1;
 //                else type = 7;
             } else if (isCloseArgs(dAPI, rAPI)) {
                 type = 3;
@@ -196,7 +151,7 @@ public class APIClassifyTool {
                 type = 4;
             else if (isDuplicated(dAPI, rAPI)) {
 //                if (typeEquals(dAPI.getReturnType(), rAPI.getReturnType()))
-                type = 1;
+                    type = 1;
 //                else type = 7;
             } else if (isCompactAPI(api)) {
                 type = 5;
@@ -571,8 +526,6 @@ public class APIClassifyTool {
         //TODO 判断两个类是否是父子类，暂时写死，有时间重新写
         Map<String, Set<String>> map = new HashMap<>();
         map.put("JComponent", new HashSet<>(Arrays.asList("JMenuBar", "JScrollPane")));
-        map.put("Component", new HashSet<>(Arrays.asList("JComponent", "JTable")));
-        map.put("JTable", new HashSet<>(Arrays.asList("JComponent", "Component")));
         String[] str1s = str1.split("\\.");
         String[] str2s = str2.split("\\.");
         String s1 = str1s[str1s.length - 1], s2 = str2s[str2s.length - 1];

@@ -13,11 +13,13 @@ import java.util.List;
 
 public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
 
-    public final static String INSERT = LoadProperties.get("JDK_DEPRECATED_API_INSERT");
-    public final static String GET = LoadProperties.get("JDK_DEPRECATED_API_GET");
-    public final static String UPDATE = LoadProperties.get("JDK_DEPRECATED_API_UPDATE");
-    public final static String GETBYDAPI = LoadProperties.get("JDK_DEPRECATED_API_GETDAPI");
-    public final static String UPDATEARGS = LoadProperties.get("JDK_DEPRECATED_API_UPDATEARGS");
+    private final static String INSERT = LoadProperties.get("JDK_DEPRECATED_API_INSERT");
+    private final static String GET = LoadProperties.get("JDK_DEPRECATED_API_GET");
+    private final static String UPDATE = LoadProperties.get("JDK_DEPRECATED_API_UPDATE");
+    private final static String GETBYDAPI = LoadProperties.get("JDK_DEPRECATED_API_GETDAPI");
+    private final static String UPDATEARGS = LoadProperties.get("JDK_DEPRECATED_API_UPDATEARGS");
+    private final static String GETBYRAPI = LoadProperties.get("JDK_DEPRECATED_API_GETBYRAPI");
+    private final static String GETBYID = LoadProperties.get("JDK_DEPRECATED_API_GETBYID");
 
     @Override
     public void insert(JDKDeprecatedAPI jdkDeprecatedAPI) {
@@ -112,7 +114,7 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             preparedStatement.setString(14, jdkDeprecatedAPI.getrInvoker());
             preparedStatement.setInt(15, jdkDeprecatedAPI.getType());
             preparedStatement.setString(16, jdkDeprecatedAPI.getQualifiedSignature());
-            preparedStatement.setString(17,jdkDeprecatedAPI.getReplace());
+            preparedStatement.setString(17, jdkDeprecatedAPI.getReplace());
             preparedStatement.setInt(18, jdkDeprecatedAPI.getId());
             preparedStatement.execute();
         } catch (Exception e) {
@@ -147,7 +149,7 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
                 preparedStatement.setString(14, api.getrInvoker());
                 preparedStatement.setInt(15, api.getType());
                 preparedStatement.setString(16, api.getQualifiedSignature());
-                preparedStatement.setString(17,api.getReplace());
+                preparedStatement.setString(17, api.getReplace());
                 preparedStatement.setInt(18, api.getId());
                 preparedStatement.execute();
             }
@@ -221,5 +223,94 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             DBUtil.closePreparedStatement(preparedStatement);
             DBUtil.closeConnection(connection);
         }
+    }
+
+    @Override
+    public List<JDKDeprecatedAPI> getByReplaced(JDKDeprecatedAPI jdkDeprecatedAPI) {
+        List<JDKDeprecatedAPI> jdkDeprecatedAPIS = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(GETBYRAPI);
+            preparedStatement.setString(1, jdkDeprecatedAPI.getrPackageName());
+            preparedStatement.setString(2, jdkDeprecatedAPI.getrClassName());
+            preparedStatement.setString(3, jdkDeprecatedAPI.getrMethodName());
+            preparedStatement.setString(4, jdkDeprecatedAPI.getrReturnType());
+            preparedStatement.setString(5, jdkDeprecatedAPI.getrMethodArgs());
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+                api.setId(rs.getInt(1));
+                api.setPackageName(rs.getString(2));
+                api.setClassName(rs.getString(3));
+                api.setMethodName(rs.getString(4));
+                api.setMethodReturnType(rs.getString(5));
+                api.setMethodArgs(rs.getString(6));
+                api.setComment(rs.getString(7));
+                api.setLine(rs.getInt(8));
+                api.setReplacedComment(rs.getString(9));
+                api.setrPackageName(rs.getString(10));
+                api.setrClassName(rs.getString(11));
+                api.setrMethodName(rs.getString(12));
+                api.setrReturnType(rs.getString(13));
+                api.setrMethodArgs(rs.getString(14));
+                api.setrInvoker(rs.getString(15));
+                api.setType(rs.getInt(16));
+                api.setQualifiedSignature(rs.getString(17));
+                api.setReplace(rs.getString(18));
+                jdkDeprecatedAPIS.add(api);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeResultset(rs);
+            DBUtil.closePreparedStatement(preparedStatement);
+            DBUtil.closeConnection(connection);
+        }
+        return jdkDeprecatedAPIS;
+    }
+
+    @Override
+    public JDKDeprecatedAPI getById(int id) {
+        JDKDeprecatedAPI api = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(GETBYID);
+            preparedStatement.setInt(1, id);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                api = new JDKDeprecatedAPI();
+                api.setId(rs.getInt(1));
+                api.setPackageName(rs.getString(2));
+                api.setClassName(rs.getString(3));
+                api.setMethodName(rs.getString(4));
+                api.setMethodReturnType(rs.getString(5));
+                api.setMethodArgs(rs.getString(6));
+                api.setComment(rs.getString(7));
+                api.setLine(rs.getInt(8));
+                api.setReplacedComment(rs.getString(9));
+                api.setrPackageName(rs.getString(10));
+                api.setrClassName(rs.getString(11));
+                api.setrMethodName(rs.getString(12));
+                api.setrReturnType(rs.getString(13));
+                api.setrMethodArgs(rs.getString(14));
+                api.setrInvoker(rs.getString(15));
+                api.setType(rs.getInt(16));
+                api.setQualifiedSignature(rs.getString(17));
+                api.setReplace(rs.getString(18));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeResultset(rs);
+            DBUtil.closePreparedStatement(preparedStatement);
+            DBUtil.closeConnection(connection);
+        }
+        return api;
     }
 }

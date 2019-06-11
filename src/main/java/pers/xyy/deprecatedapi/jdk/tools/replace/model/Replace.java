@@ -8,6 +8,7 @@ public class Replace {
 
     private List<Method> methods;
     private List<String> operations;
+    private String comment;
 
     public List<Method> getMethods() {
         return methods;
@@ -25,6 +26,14 @@ public class Replace {
         this.operations = operations;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public static void main(String[] args) {
 //        Replace replace = new Replace();
 //        Method method = new Method();
@@ -39,7 +48,7 @@ public class Replace {
 //        replace.setMethods(Collections.singletonList(method));
 //        replace.setOperations(Collections.singletonList("$m1"));
 //        System.out.println(JSON.toJSONString(replace));
-        Replace replace = JSON.parseObject("{\"methods\":[{\"args\":[{\"name\":\"i\",\"operations\":[\"$this = $dArgs1\"],\"related\":true,\"type\":\"int\"}],\"invoker\":\"\",\"name\":\"getComponent\"}],\"operations\":[\"$m1\"]}",Replace.class);
+        Replace replace = JSON.parseObject("{\"methods\":[{\"args\":[{\"name\":\"i\",\"operations\":[\"$this = $dArgs1\"],\"related\":true,\"type\":\"int\"}],\"invoker\":\"\",\"name\":\"getComponent\"}],\"operations\":[\"$m1\"]}", Replace.class);
         System.out.println(replace);
     }
 }

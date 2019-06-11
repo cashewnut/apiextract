@@ -32,12 +32,12 @@ public class Test {
 //                "     * @deprecated As of Java 2 platform v1.2,\n" +
 //                "     * replaced by <code>getPassword</code>.\n" +
 //                "     * @return the text";
-//        String str = "use method <code>set_result</code>";
+        String str = "replaced by {@link java.awt.Container#getComponent(int)}";
 //
-//        Pattern p = Pattern.compile("use (the )?method <code>([#]?[\\w]+(\\([\\w\\s,\\[\\].<>?]*\\))?\\s?)*</code>");
-////        Pattern p = Pattern.compile("\\{@link ([#]?[\\w]+\\([\\w\\s,\\[\\].<>?]*\\)\\s?)*}.");
-//        Matcher m = p.matcher(str);
-//        System.out.println(m.find());
+        Pattern p = Pattern.compile("[R|r]eplaced by \\{@link ([#]?[\\w]+(\\([\\w\\s,\\[\\].<>?]*\\))?\\s?)*}");
+//        Pattern p = Pattern.compile("\\{@link ([#]?[\\w]+\\([\\w\\s,\\[\\].<>?]*\\)\\s?)*}.");
+        Matcher m = p.matcher(str);
+        System.out.println(m.find());
 //        System.out.println(m.group());
 
         //System.out.println(Test.class.getResource("/args").getPath());
@@ -45,8 +45,8 @@ public class Test {
 //        List<String> prefixs = FileUtil.read(Test.class.getResource("/args").toURI().getPath());
         //System.out.println(prefixs);
 
-        IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
-        List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
+//        IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
+//        List<JDKDeprecatedAPI> jdkDeprecatedAPIS = service.getJDKDeprecatedAPIs();
         //格式化注释
         /*for (JDKDeprecatedAPI api : jdkDeprecatedAPIS) {
             String comment = api.getComment();

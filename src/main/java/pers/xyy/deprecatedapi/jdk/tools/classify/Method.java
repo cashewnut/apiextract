@@ -58,4 +58,15 @@ public class Method {
     public void setMethodArgs(String methodArgs) {
         this.methodArgs = methodArgs;
     }
+
+    @Override
+    public String toString() {
+        return "Method{" +
+                "packageName='" + packageName + '\'' +
+                ", className='" + className + '\'' +
+                ", name='" + name + '\'' +
+                ", returnType='" + returnType + '\'' +
+                ", methodArgs='" + methodArgs + '\'' +
+                '}';
+    }
 }

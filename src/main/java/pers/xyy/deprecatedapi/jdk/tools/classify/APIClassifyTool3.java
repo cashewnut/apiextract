@@ -29,14 +29,14 @@ import java.util.stream.Collectors;
  * 转移：R_API在JDK7中已经出现，对于D_API的替换只是进行转移操作。
  * 非转移：R_API在JDK7中没有出现，在JDK8中才出现。
  * 1、API去重/替换。
- * 2、参数变更。
- * 3、开放/扩展参数。
- * 4、缩减/关闭参数。
- * 5、参数整合(转移)。
- * 6、API整合(转移)。
- * 7、API拆解(转移)。
+ * 2、开放/扩展参数。
+ * 3、缩减/关闭参数。
+ * 4、参数整合(转移)。
+ * 5、API整合(转移)。
+ * 6、API拆解(转移)。
+ * 7、其他。
  */
-public class APIClassifyTool {
+public class APIClassifyTool3 {
 
     public static IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
     private final static float threshold = Float.parseFloat(LoadProperties.get("API_EQUALS_THRESHOLD"));
@@ -44,14 +44,7 @@ public class APIClassifyTool {
     private final static Set<Integer> setDInvokeR = Arrays.stream(LoadProperties.get("D_INVOKE_R").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
     private final static Set<Integer> setRInvokeD = Arrays.stream(LoadProperties.get("R_INVOKE_D").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
     private final static Set<Integer> setDEqualsR = Arrays.stream(LoadProperties.get("D_EQUALS_R").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> duplicatedSet = Arrays.stream(LoadProperties.get("DUP_API").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> openArgs = Arrays.stream(LoadProperties.get("OPEN_ARGS").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> notFound = Arrays.stream(LoadProperties.get("NOT_FOUND").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
 
-    private final static Set<Integer> SET_INTERFACE = Arrays.stream(LoadProperties.get("SET_INTERFACE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_API_SPLIT = Arrays.stream(LoadProperties.get("SET_API_SPLIT").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_HIGH_CONFIDENCE = Arrays.stream(LoadProperties.get("SET_HIGH_CONFIDENCE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
-    private final static Set<Integer> SET_LOW_CONFIDENCE = Arrays.stream(LoadProperties.get("SET_LOW_CONFIDENCE").split(",")).map(Integer::parseInt).collect(Collectors.toSet());
 
     public static void main(String[] args) {
 
@@ -59,180 +52,107 @@ public class APIClassifyTool {
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
         JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
 
-        APIClassifyTool tool = new APIClassifyTool();
-//        System.out.println(tool.params("JTable","java.awt.Component,String"));
+        APIClassifyTool3 tool = new APIClassifyTool3();
+//        for (int id : Arrays.stream("16,17,19,128,129,313,314,330,331,356,360,361,363,364,366,405,418".split(",")).map(Integer::parseInt).collect(Collectors.toList())) {
+//            //for (int id : Arrays.stream("128".split(",")).map(Integer::parseInt).collect(Collectors.toList())) {
+//            JDKDeprecatedAPI api = service.getById(id);
+//            Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
+//            Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
+//            System.out.println("id : " + id + ", ret : " + tool.isRInvokeD(rAPI, dAPI));
+//        }
         tool.classify();
 
+
+        /*APIClassifyTool4 tool = new APIClassifyTool4();
+        Method dAPI = new Method("java.awt", "Component", "enable", "void", "");
+        Method rAPI = new Method("java.awt", "Component", "setEnabled", "void", "boolean");
+        System.out.println(tool.isRInvokeD(rAPI, dAPI));
+        JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+        api.setrPackageName("java.awt");
+        api.setrClassName("Component");
+        api.setrMethodName("setEnabled");
+        api.setrReturnType("void");
+        api.setrMethodArgs("boolean");
+        System.out.println(tool.isCompactAPI(api));
+        MethodDeclaration md = tool.getMDFromCU(FileUtil.openCU(tool.toURL("java.awt", "Component")), "enable", "void", "");
+        System.out.println(md.getTypeAsString());*/
 
     }
 
     public void classify() {
         List<JDKDeprecatedAPI> apis = service.getJDKDeprecatedAPIs();
+        int count = 0;
         int noReplace = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-//        Map<Integer, List<Integer>> idsMap = new HashMap<>();
-        List<Integer> ids = new ArrayList<>();
         for (JDKDeprecatedAPI api : apis) {
+
             if (api.getrPackageName() == null) {
                 noReplace++;
                 continue;
             }
-            System.out.print("id : " + api.getId());
             int type = type(api);
-            System.out.println(", type : " + type);
-            map.put(type, map.getOrDefault(type, 0) + 1);
-            if(type%10 == 2){
-                ids.add(api.getId());
+
+            if (type / 10 == 7) {
+                System.out.println("id : " + api.getId() + ", type : " + type(api));
+                count++;
             }
+
+
         }
-//        System.out.println(424 - noReplace);
-//        for (Integer type : map.keySet()) {
-//            System.out.println("type : " + type + ", count : " + map.get(type));
-//        }
-//        System.out.println("total : " + (424 - noReplace));
-        ids.forEach(System.out::println);
+        System.out.println(noReplace);
+        System.out.println(count);
     }
 
     private int type(JDKDeprecatedAPI api) {
         Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
         Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
-        int type = 0;
-        if (SET_API_SPLIT.contains(api.getId())) {
-            type = 7;
-        } else if (!typeEquals(dAPI.getReturnType(), rAPI.getReturnType())) {
-            type = 8;
-        } else if (isCompactAPI(api)) {
-            type = 6;
-        }
-        if (SET_INTERFACE.contains(api.getId())) {
-            if (type == 0) {
-                type = params(api.getMethodArgs(), api.getrMethodArgs());
-            }
-            type += 30;
-        } else if (SET_HIGH_CONFIDENCE.contains(api.getId())) {
-            if (type == 0) {
-                if (compactArgs.contains(api.getId())) {
-                    type = 5;
-                } else {
-                    type = params(api.getMethodArgs(), api.getrMethodArgs());
-                }
-            }
-            type += 10;
-        } else if (SET_LOW_CONFIDENCE.contains(api.getId())) {
-            if (type == 0) {
-                type = params(api.getMethodArgs(), api.getrMethodArgs());
-            }
-            type += 20;
-        }
-        return type;
-    }
-
-    /**
-     * @param dAPI
-     * @param rAPI
-     * @return 1:重复, 2:参数变更, 3:开放参数, 4:关闭参数
-     */
-    private int params(String dAPI, String rAPI) {
-        List<String> dAPIArgs = dAPI.isEmpty() ? new ArrayList<>() : Arrays.stream(dAPI.split(",")).collect(Collectors.toList());
-        List<String> rAPIArgs = rAPI.isEmpty() ? new ArrayList<>() : Arrays.stream(rAPI.split(",")).collect(Collectors.toList());
-        int index = 0;
-        while (index < dAPIArgs.size()) {
-            for (int i = 0; i < rAPIArgs.size(); i++) {
-                if (typeEquals(dAPIArgs.get(index), rAPIArgs.get(i))) {
-                    dAPIArgs.remove(index);
-                    rAPIArgs.remove(i);
-                    index--; //先减一，之后再加回来。
-                    break;
-                }
-            }
-            index++;
-        }
-        if (dAPIArgs.isEmpty() && rAPIArgs.isEmpty())
-            return 1;
-        if (!dAPIArgs.isEmpty() && !rAPIArgs.isEmpty())
-            return 2;
-        if (!rAPIArgs.isEmpty())
-            return 3;
-
-        return 4;
-    }
-
-
-    private int type1(JDKDeprecatedAPI api) {
-        Method rAPI = new Method(api.getrPackageName(), api.getrClassName(), api.getrMethodName(), api.getrReturnType(), api.getrMethodArgs());
-        Method dAPI = new Method(api.getPackageName(), api.getClassName(), api.getMethodName(), api.getMethodReturnType(), api.getMethodArgs());
         int transfer = isMethodExist(rAPI) ? 1 : 2;
-        if (api.getId() == 416 || api.getId() == 26)
+        if (api.getId() == 416)
             transfer = 1;
         int type = 8;
         if (api.getId() == 93 || api.getId() == 285 || api.getId() == 15) {
             type = 6;
         } else if (api.getId() == 20) {
             return 11;
-        }
-//        else if (!typeEquals(api.getMethodReturnType(), api.getrReturnType())) {
-//            type = 7;
-//        }
-        else if (notFound.contains(api.getId())) {
-            type = 8;
-        } else if (duplicatedSet.contains(api.getId())) {
-            type = 1;
-        } else if (openArgs.contains(api.getId())) {
-            type = 2;
         } else if (setDInvokeR.contains(api.getId())) { //deprecated API调用replaced API
-            if (compactArgs.contains(api.getId()))
-                type = 4;
-            else if (isDuplicated(dAPI, rAPI)) {
-//                if (typeEquals(dAPI.getReturnType(), rAPI.getReturnType())) //如果返回值也相同，则返回1，返回值不同返回7。
-                type = 1;
-//                else type = 7;
-            } else if (isCloseArgs(dAPI, rAPI)) {
-                type = 3;
-            } else if (isOpenArgs(dAPI, rAPI)) {
+            if (isDuplicated(dAPI, rAPI)) {
+                if (typeEquals(dAPI.getMethodArgs(), rAPI.getMethodArgs()))
+                    type = 1;
+                else type = 7;
+            } else if (isOpenArgs(dAPI, rAPI))
                 type = 2;
-            }
+            else if (isCompactArgs4DinvokeR(dAPI, rAPI))
+                type = 3;
         } else if (setRInvokeD.contains(api.getId())) {
             if (compactArgs.contains(api.getId()))
                 type = 4;
             else if (isDuplicated(dAPI, rAPI)) {
-//                if (typeEquals(dAPI.getReturnType(), rAPI.getReturnType()))
-                type = 1;
-//                else type = 7;
-            } else if (isCompactAPI(api)) {
-                type = 5;
-            } else if (isOpenArgs(rAPI, dAPI)) {
-                type = 3;
-            } else if (isCloseArgs(rAPI, dAPI)) {
+                if (typeEquals(dAPI.getMethodArgs(), rAPI.getMethodArgs()))
+                    type = 1;
+                else type = 7;
+            } else if (isCompactArgs4DinvokeR(rAPI, dAPI))
                 type = 2;
-            }
+            else if (isOpenArgs(rAPI, dAPI))
+                type = 3;
+            else if (isCompactAPI(api))
+                type = 5;
         } else if (setDEqualsR.contains(api.getId())) {
             if (compactArgs.contains(api.getId()))
                 type = 4;
-//            else if (!typeEquals(dAPI.getReturnType(), rAPI.getReturnType())) {
-//                type = 7;
-//            }
             else if (isDuplicated(dAPI, rAPI)) {
-                if (typeEquals(dAPI.getReturnType(), rAPI.getReturnType()))
+                if (typeEquals(dAPI.getMethodArgs(), rAPI.getMethodArgs()))
                     type = 1;
-            } else {
-                if (isCloseArgs4DER(dAPI, rAPI))
-                    type = 3;
-                else
-                    type = 2;
-            }
+                else type = 7;
+            } else if (isOpenArgs(dAPI, rAPI) || api.getId() == 262)
+                type = 2;
+            else if (isOpenArgs(rAPI, dAPI))
+                type = 3;
 
         }
         return type * 10 + transfer;
     }
 
-    /**
-     * 如果D中有参数没有被R使用，则说明是关闭参数
-     *
-     * @param dAPI
-     * @param rAPI
-     * @return
-     */
-    private boolean isCloseArgs(Method dAPI, Method rAPI) {
+    //只针对D调R的情况，判断是否是开放参数的情况。
+    private boolean isOpenArgs(Method dAPI, Method rAPI) {
         MethodDeclaration md = getMDFromCU(FileUtil.openCU(toURL(dAPI.getPackageName(), dAPI.getClassName())), dAPI.getName(), dAPI.getReturnType(), dAPI.getMethodArgs());
         List<String> dAPIArgsNames = new ArrayList<>();
         assert md != null;
@@ -242,15 +162,13 @@ public class APIClassifyTool {
         }
         MethodCallExpr rmc = null;
         for (MethodCallExpr mc : md.findAll(MethodCallExpr.class)) {
-            if (mc.getNameAsString().equals(rAPI.getName()) && (mc.getArguments().size() == 0 && rAPI.getMethodArgs().isEmpty() || mc.getArguments().size() == rAPI.getMethodArgs().split(",").length)) {
+            if (mc.getNameAsString().equals(rAPI.getName())) {
                 rmc = mc;
                 break;
             }
         }
-        if (rmc == null) {
-            System.out.println("Error : can't found this mc in close!!");
+        if (rmc == null)
             return false;
-        }
         Set<String> rAPIArgsNames = new HashSet<>();
         if (rmc.getArguments() != null) {
             for (Expression name : rmc.getArguments())
@@ -258,49 +176,16 @@ public class APIClassifyTool {
         }
         for (String name : dAPIArgsNames) {
             if (!rAPIArgsNames.contains(name))
-                return true;
+                return false;
         }
-        return false;
-    }
-
-
-    //只针对D调R的情况，判断是否是开放参数的情况。
-    private boolean isOpenArgs(Method dAPI, Method rAPI) {
-        MethodDeclaration md = getMDFromCU(FileUtil.openCU(toURL(dAPI.getPackageName(), dAPI.getClassName())), dAPI.getName(), dAPI.getReturnType(), dAPI.getMethodArgs());
-        Set<String> dAPIArgsNames = new HashSet<>();
-        assert md != null;
-        if (md.getParameters() != null) {
-            for (int i = 0; i < md.getParameters().size(); i++)
-                dAPIArgsNames.add(md.getParameter(i).getNameAsString());
-        }
-        MethodCallExpr rmc = null;
-        for (MethodCallExpr mc : md.findAll(MethodCallExpr.class)) {
-            if (mc.getNameAsString().equals(rAPI.getName()) && (mc.getArguments().size() == 0 && rAPI.getMethodArgs().isEmpty() || mc.getArguments().size() == rAPI.getMethodArgs().split(",").length)) {
-                rmc = mc;
-                break;
-            }
-        }
-        if (rmc == null) {
-            System.out.println("Error : can't found this mc in open!!");
-            return false;
-        }
-        List<String> rAPIArgsNames = new ArrayList<>();
-        if (rmc.getArguments() != null) {
-            for (Expression name : rmc.getArguments())
-                rAPIArgsNames.add(name.toString());
-        }
-        for (String name : rAPIArgsNames) {
-            if (!dAPIArgsNames.contains(name))
-                return true;
-        }
-        return false;
+        return true;
 
     }
 
-    private boolean isCloseArgs4DER(Method dAPI, Method rAPI) {
+    private boolean isCompactArgs4DinvokeR(Method dAPI, Method rAPI) {
         int num1 = dAPI.getMethodArgs().isEmpty() ? 0 : dAPI.getMethodArgs().split(",").length;
         int num2 = rAPI.getMethodArgs().isEmpty() ? 0 : dAPI.getMethodArgs().split(",").length;
-        return num1 >= num2;
+        return num1 > num2;
     }
 
 
@@ -527,7 +412,7 @@ public class APIClassifyTool {
                 continue;
             if (!typeEquals(md.getTypeAsString(), returnType))
                 continue;
-            if ((args == null || args.isEmpty()) && (md.getParameters() == null || md.getParameters().size() == 0) && md.getParentNode().get().equals(cid))
+            if ((args == null || args.isEmpty()) && (md.getParameters() == null || md.getParameters().size() == 0))
                 return md;
             if (args != null && md.getParameters() != null) {
                 String[] cmpArgs1 = args.split(",");
@@ -571,8 +456,6 @@ public class APIClassifyTool {
         //TODO 判断两个类是否是父子类，暂时写死，有时间重新写
         Map<String, Set<String>> map = new HashMap<>();
         map.put("JComponent", new HashSet<>(Arrays.asList("JMenuBar", "JScrollPane")));
-        map.put("Component", new HashSet<>(Arrays.asList("JComponent", "JTable")));
-        map.put("JTable", new HashSet<>(Arrays.asList("JComponent", "Component")));
         String[] str1s = str1.split("\\.");
         String[] str2s = str2.split("\\.");
         String s1 = str1s[str1s.length - 1], s2 = str2s[str2s.length - 1];

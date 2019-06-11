@@ -16,6 +16,10 @@ public interface IJDKDeprecatedAPIDAO {
 
     JDKDeprecatedAPI get(JDKDeprecatedAPI jdkDeprecatedAPI);
 
-    void updateArgs(JDKDeprecatedAPI jdkDeprecatedAPI,String args);
+    void updateArgs(JDKDeprecatedAPI jdkDeprecatedAPI, String args);
+
+    List<JDKDeprecatedAPI> getByReplaced(JDKDeprecatedAPI jdkDeprecatedAPI);
+
+    JDKDeprecatedAPI getById(int id);
 
 }
