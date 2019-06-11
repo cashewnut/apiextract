@@ -116,7 +116,7 @@ public class ProjectStudy {
     }
 
     public static void main(String[] args) {
-        ProjectStudy projectStudy = new ProjectStudy("/Users/xiyaoguo/Downloads/pdfbox-trunk");
+        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
         System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
         System.out.println("count : " + projectStudy.invokeCount());
 
