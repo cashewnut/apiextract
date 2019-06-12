@@ -131,7 +131,7 @@ public class ProjectStudy {
                 int count = projectStudy.invokeCount();
                 System.out.println(project.getId() + " count : " + count);
                 if (count >= 10)
-                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
+                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", project.getId() + "");
             } catch (StackOverflowError e) {
 
             }
