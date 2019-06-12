@@ -121,6 +121,7 @@ public class ProjectStudy {
         List<Project> projects = new StudyService().getProjects();
         for (Project project : projects) {
             ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
+            System.out.println(project.getLocalAddress());
             System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
             int count = projectStudy.invokeCount();
             System.out.println(project.getId() + " count : " + count);
