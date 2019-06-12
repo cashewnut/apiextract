@@ -119,15 +119,20 @@ public class ProjectStudy {
     public static void main(String[] args) {
 
         List<Project> projects = new StudyService().getProjects();
-        for (Project project : projects) {
-            ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
-            System.out.println(project.getLocalAddress());
-            System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
-            int count = projectStudy.invokeCount();
-            System.out.println(project.getId() + " count : " + count);
-            if (count >= 10)
-                FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
+        try{
+            for (Project project : projects) {
+                ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
+                System.out.println(project.getLocalAddress());
+                System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
+                int count = projectStudy.invokeCount();
+                System.out.println(project.getId() + " count : " + count);
+                if (count >= 10)
+                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
+            }
+        }catch (StackOverflowError e){
+
         }
+
 
     }
 
