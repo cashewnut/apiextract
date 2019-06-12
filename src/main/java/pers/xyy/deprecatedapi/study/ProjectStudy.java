@@ -126,6 +126,8 @@ public class ProjectStudy {
                 ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
                 System.out.println(project.getLocalAddress());
                 System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
+                if (projectStudy.getJavaFilesPath().size() > 2000)
+                    continue;
                 int count = projectStudy.invokeCount();
                 System.out.println(project.getId() + " count : " + count);
                 if (count >= 10)
