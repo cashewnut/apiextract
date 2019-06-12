@@ -69,7 +69,7 @@ public class ProjectStudy {
             if (!methodNameSet.contains(mc.getNameAsString()))
                 return false;
             List<JDKDeprecatedAPI> candidates = getByMethodName(mc.getNameAsString());
-            System.out.println(candidates.size());
+            //System.out.println(candidates.size());
             ResolvedMethodDeclaration rmd = mc.resolveInvokedMethod();
             String type = rmd.getReturnType().describe();
             String className = rmd.getClassName();
@@ -125,7 +125,7 @@ public class ProjectStudy {
             System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
             int count = projectStudy.invokeCount();
             System.out.println(project.getId() + " count : " + count);
-            if (count >= 20)
+            if (count >= 10)
                 FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
         }
 

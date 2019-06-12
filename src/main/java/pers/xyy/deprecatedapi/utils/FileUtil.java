@@ -15,7 +15,7 @@ public class FileUtil {
         FileInputStream in;
         try {
             in = new FileInputStream(filePath);
-            System.out.println(filePath);
+           // System.out.println(filePath);
             cu = JavaParser.parse(in); // 解析为语法树
             in.close();
         } catch (Exception e) {
