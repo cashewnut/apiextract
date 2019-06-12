@@ -20,6 +20,18 @@ public class DBUtil {
         return connection;
     }
 
+    public static Connection getConnection(String url){
+        Connection connection = null;
+        try{
+            Class.forName(DRIVER);
+            connection = DriverManager.getConnection(url,USERNAME,PASSWORD);
+
+        }catch(Exception e ){
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
     public static void closeConnection(Connection connection) {
         try {
             if (connection != null)

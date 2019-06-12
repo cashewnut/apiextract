@@ -15,6 +15,7 @@ import pers.xyy.deprecatedapi.utils.FileUtil;
 import pers.xyy.deprecatedapi.utils.StringUtils;
 
 import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -116,9 +117,16 @@ public class ProjectStudy {
     }
 
     public static void main(String[] args) {
-        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
-        System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
-        System.out.println("count : " + projectStudy.invokeCount());
+
+        List<Project> projects = new StudyService().getProjects();
+        for (Project project : projects) {
+            ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
+            System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
+            int count = projectStudy.invokeCount();
+            System.out.println(project.getId() + " count : " + count);
+            if (count >= 20)
+                FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
+        }
 
     }
 
