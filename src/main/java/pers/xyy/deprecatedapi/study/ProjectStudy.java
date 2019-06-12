@@ -119,8 +119,10 @@ public class ProjectStudy {
     public static void main(String[] args) {
 
         List<Project> projects = new StudyService().getProjects();
-        try{
-            for (Project project : projects) {
+        for (Project project : projects) {
+            try {
+
+
                 ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
                 System.out.println(project.getLocalAddress());
                 System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
@@ -128,9 +130,9 @@ public class ProjectStudy {
                 System.out.println(project.getId() + " count : " + count);
                 if (count >= 10)
                     FileUtil.write("/home/fdse/xiyaoguo/out.txt", count + "");
-            }
-        }catch (StackOverflowError e){
+            } catch (StackOverflowError e) {
 
+            }
         }
 
 
