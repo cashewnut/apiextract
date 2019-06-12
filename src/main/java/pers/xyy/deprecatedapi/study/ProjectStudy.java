@@ -116,13 +116,35 @@ public class ProjectStudy {
         return set;
     }
 
+    public void run(){
+        List<Project> projects = new StudyService().getProjects();
+        for (Project project : projects) {
+            try {
+                ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
+                System.out.println(project.getLocalAddress());
+                System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
+                if (projectStudy.getJavaFilesPath().size() > 2000)
+                    continue;
+                int count = projectStudy.invokeCount();
+                System.out.println(project.getId() + " count : " + count);
+                if (count >= 10)
+                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", project.getId() + " , count : " + count);
+            } catch (StackOverflowError e) {
+
+            }
+        }
+    }
+
+    public void run2(){
+        ProjectStudy projectStudy = new ProjectStudy("");
+
+    }
+
     public static void main(String[] args) {
 
         List<Project> projects = new StudyService().getProjects();
         for (Project project : projects) {
             try {
-
-
                 ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
                 System.out.println(project.getLocalAddress());
                 System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
