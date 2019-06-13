@@ -36,6 +36,9 @@ public class ProjectStudy {
 
     public Set<String> methodNameSet;
 
+    public ProjectStudy() {
+    }
+
     public ProjectStudy(String projectPath) {
         this.javaFilesPath = FileUtil.getJavaFilePath(new File(projectPath));
         this.apis = service.getJDKDeprecatedAPIs();
@@ -136,28 +139,14 @@ public class ProjectStudy {
     }
 
     public void run2(){
-        ProjectStudy projectStudy = new ProjectStudy("");
+        ProjectStudy projectStudy = new ProjectStudy("/Users/xiyaoguo/Desktop/astrid");
+        System.out.println(projectStudy.invokeCount());
+
 
     }
 
     public static void main(String[] args) {
-
-        List<Project> projects = new StudyService().getProjects();
-        for (Project project : projects) {
-            try {
-                ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
-                System.out.println(project.getLocalAddress());
-                System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
-                if (projectStudy.getJavaFilesPath().size() > 2000)
-                    continue;
-                int count = projectStudy.invokeCount();
-                System.out.println(project.getId() + " count : " + count);
-                if (count >= 10)
-                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", project.getId() + " , count : " + count);
-            } catch (StackOverflowError e) {
-
-            }
-        }
+        new ProjectStudy().run();
 
 
     }
