@@ -60,6 +60,8 @@ public class ProjectStudy {
                 }
             } catch (Exception e) {
 
+            } catch (StackOverflowError error){
+
             }
 
         }
