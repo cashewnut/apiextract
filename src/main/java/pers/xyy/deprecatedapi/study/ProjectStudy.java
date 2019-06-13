@@ -50,6 +50,7 @@ public class ProjectStudy {
 
     public int invokeCount() {
         int count = 0;
+        System.out.println("This file has " + javaFilesPath.size() + " classes");
         for (String path : javaFilesPath) {
             try {
                 CompilationUnit cu = FileUtil.openCU(path);
