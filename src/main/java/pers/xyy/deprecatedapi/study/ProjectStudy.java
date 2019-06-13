@@ -139,10 +139,15 @@ public class ProjectStudy {
     }
 
 
+    public List<Integer> getIds() {
+        return ids;
+    }
+
     public void run2() {
         ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
         System.out.println(projectStudy.invokeCount());
-        String idsString = ids.stream().map(Object::toString).collect(Collectors.joining(","));
+        String idsString = projectStudy.getIds().stream().map(Object::toString).collect(Collectors.joining(","));
+        System.out.println("ids : " + idsString);
         FileUtil.write("/home/fdse/xyy/study/ids", idsString);
     }
 
