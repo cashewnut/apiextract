@@ -16,16 +16,15 @@ import pers.xyy.deprecatedapi.utils.StringUtils;
 
 import java.io.File;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProjectStudy {
 
     private List<String> javaFilesPath;
     private final static IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
     private List<JDKDeprecatedAPI> apis;
+    private List<Integer> ids = new ArrayList<>();
 
     static {
         TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
@@ -91,6 +90,7 @@ public class ProjectStudy {
                     continue;
                 if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
                     //FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
+                    ids.add(api.getId());
                     return true;
                 }
 
@@ -119,7 +119,7 @@ public class ProjectStudy {
         return set;
     }
 
-    public void run(){
+    public void run() {
         List<Project> projects = new StudyService().getProjects();
         for (Project project : projects) {
             try {
@@ -138,15 +138,16 @@ public class ProjectStudy {
         }
     }
 
-    public void run2(){
-        ProjectStudy projectStudy = new ProjectStudy("/Users/xiyaoguo/Desktop/astrid");
+
+    public void run2() {
+        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
         System.out.println(projectStudy.invokeCount());
-
-
+        String idsString = ids.stream().map(Object::toString).collect(Collectors.joining(","));
+        FileUtil.write("/home/fdse/xyy/study/ids", idsString);
     }
 
     public static void main(String[] args) {
-        new ProjectStudy().run();
+        new ProjectStudy().run2();
 
 
     }
