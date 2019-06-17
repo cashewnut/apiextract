@@ -94,7 +94,7 @@ public class ProjectStudy {
                 if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
                     //FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
                     FileUtil.write("/home/fdse/xiyaoguo/out.txt", api.getId() + ",");
-                    System.out.println(api.getId());
+                    System.out.print(api.getId() + ",");
                     return true;
                 }
 
