@@ -127,6 +127,7 @@ public class ProjectStudy {
         List<Project> projects = new StudyService().getProjects();
         for (Project project : projects) {
             try {
+                System.out.println("The project's id is " + project.getId());
                 ProjectStudy projectStudy = new ProjectStudy(project.getLocalAddress());
                 System.out.println(project.getLocalAddress());
                 System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
