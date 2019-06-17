@@ -1,15 +1,11 @@
-import com.sun.org.apache.xml.internal.security.utils.resolver.ResourceResolverException;
-
 import javax.swing.*;
 import javax.swing.text.BoxView;
 import javax.swing.text.View;
-import javax.xml.soap.SOAPException;
-import java.io.IOException;
 import java.util.Date;
 
 public class C {
 
-    public void testMethod(String str, JComponent jp) throws IOException, ResourceResolverException, SOAPException {
+    public void testMethod(String str, JComponent jp) {
         Date date = new Date();
         int month = 5;
         date.setMonth(5);
