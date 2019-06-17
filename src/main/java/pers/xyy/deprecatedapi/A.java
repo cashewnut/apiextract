@@ -1,19 +1,34 @@
 package pers.xyy.deprecatedapi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import pers.xyy.deprecatedapi.utils.DBUtil;
+import pers.xyy.deprecatedapi.utils.FileUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class A {
 
-    public static void main(String[] args) throws InterruptedException {
-        for (int i = 0; i < 5; i++) {
-            System.out.println(new Random().nextInt(34) + 1);
-            new Thread().sleep(100);
+    private static final String SQL = "select id,comment from guava";
+
+    public static void main(String[] args) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                FileUtil.write("/Users/xiyaoguo/Desktop/out", "<No." + rs.getInt(1) + ">\n");
+                FileUtil.write("/Users/xiyaoguo/Desktop/out", rs.getString(2) + "\n\n\n");
+            }
+        } catch (Exception e) {
+
         }
-        System.out.println(new Random().nextInt(11) + 1);
-        new Thread().sleep(1000);
-        System.out.println(new Random().nextInt(11) + 1);
+
+
     }
 
 }

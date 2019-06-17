@@ -21,7 +21,7 @@ public class Database {
 
     private static IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
 
 
         //抽取正则表达式
