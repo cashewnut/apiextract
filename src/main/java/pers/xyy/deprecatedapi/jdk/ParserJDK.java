@@ -11,9 +11,12 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import pers.xyy.deprecatedapi.jdk.model.JDKDeprecatedAPI;
@@ -25,6 +28,7 @@ import pers.xyy.deprecatedapi.service.impl.LibraryAPIService;
 import pers.xyy.deprecatedapi.utils.FileUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,6 +39,17 @@ public class ParserJDK {
 
     private IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
 
+    public int count = 0;
+
+    static {
+        try {
+            TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), JarTypeSolver.getJarTypeSolver("/Users/xiyaoguo/Desktop/third_party/junit-4.12.jar"));
+            JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
+            JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
+        } catch (IOException e) {
+
+        }
+    }
 
     /**
      * parse a .java file.
@@ -45,10 +60,6 @@ public class ParserJDK {
         CompilationUnit cu = FileUtil.openCU(path);
         System.out.println(">>>>>>>>" + path);
 
-        TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver());
-        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
-        JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
-
         //mds用于存放deprecated method
         List<MethodDeclaration> mds = new ArrayList<>();
         VoidVisitor<List<MethodDeclaration>> visitor = new DeprecatedAPIVisitor();
@@ -56,19 +67,35 @@ public class ParserJDK {
 
         for (MethodDeclaration md : mds) {
             JDKDeprecatedAPI api = new JDKDeprecatedAPI();
-            api.setPackageName(md.resolve().getPackageName());
-            api.setClassName(md.resolve().getClassName());
-            api.setMethodReturnType(md.getType().toString());
+            ResolvedMethodDeclaration rmd = md.resolve();
+            api.setPackageName(rmd.getPackageName());
+            api.setClassName(rmd.getClassName());
+            try {
+                api.setMethodReturnType(rmd.getReturnType().describe());
+            } catch (UnsolvedSymbolException e) {
+                api.setMethodReturnType(md.getTypeAsString());
+            }
             api.setMethodName(md.getNameAsString());
-            String args = md.getParameters().stream().map(p -> p.getType().asString()).collect(Collectors.joining(","));
+            StringBuilder arguments = new StringBuilder();
+            for (int i = 0; i < rmd.getNumberOfParams(); i++) {
+                try {
+                    arguments.append(rmd.getParam(i).describeType()).append(",");
+                } catch (UnsolvedSymbolException e) {
+                    arguments.append(md.getParameter(i).getTypeAsString()).append(",");
+                }
+            }
+            String args = arguments.toString();
+            if (args.endsWith(","))
+                args = args.substring(0, args.length() - 1);
             api.setMethodArgs(args);
             if (md.getComment().isPresent())
                 api.setComment(md.getComment().get().getContent());
             if (md.getBegin().isPresent())
                 api.setLine(md.getBegin().get().line);
             System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            //service.saveJDKDeprecatedAPI(api);
+            service.saveJDKDeprecatedAPI(api);
         }
+        count += mds.size();
 
     }
 
@@ -85,9 +112,7 @@ public class ParserJDK {
             if (n.getComment().isPresent()) {
                 String comment = n.getComment().get().getContent();
                 String regex = "@deprecated";
-                Pattern p = Pattern.compile(regex);
-                Matcher m = p.matcher(comment);
-                if (m.find())
+                if (comment.contains(regex))
                     arg.add(n);
             }
         }
@@ -128,7 +153,12 @@ public class ParserJDK {
     }
 
     public static void main(String[] args) {
-        //new ParserJDK().parseFile("/Users/xiyaoguo/Desktop/src/java/util/Date.java");
+        List<String> javaFilePath = FileUtil.getJavaFilePath(new File("/Users/xiyaoguo/Desktop/third_party/junit4-r4.12/"));
+        ParserJDK parserJDK = new ParserJDK();
+        for (String path : javaFilePath) {
+            parserJDK.parseFile(path);
+        }
+        System.out.println(parserJDK.count);
     }
 
 
