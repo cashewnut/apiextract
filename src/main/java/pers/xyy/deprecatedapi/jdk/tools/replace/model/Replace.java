@@ -41,6 +41,10 @@ public class Replace {
         return comments;
     }
 
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
     public void addComment(String comment) {
         if (comments == null)
             comments = new ArrayList<>();

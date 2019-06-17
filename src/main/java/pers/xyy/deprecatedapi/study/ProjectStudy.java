@@ -2,6 +2,7 @@ package pers.xyy.deprecatedapi.study;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
@@ -15,7 +16,6 @@ import pers.xyy.deprecatedapi.utils.FileUtil;
 import pers.xyy.deprecatedapi.utils.StringUtils;
 
 import java.io.File;
-import java.sql.Connection;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +61,7 @@ public class ProjectStudy {
                 }
             } catch (Exception e) {
 
-            } catch (StackOverflowError error){
+            } catch (StackOverflowError error) {
 
             }
 
@@ -93,7 +93,7 @@ public class ProjectStudy {
                     continue;
                 if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
                     //FileUtil.write("/home/fdse/xyy/study/ids", api.getId() + "");
-                    ids.add(api.getId());
+                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", api.getId() + ",");
                     return true;
                 }
 
@@ -131,10 +131,7 @@ public class ProjectStudy {
                 System.out.println("The project has " + projectStudy.getJavaFilesPath().size() + "classes!");
                 if (projectStudy.getJavaFilesPath().size() > 2000)
                     continue;
-                int count = projectStudy.invokeCount();
-                System.out.println(project.getId() + " count : " + count);
-                if (count >= 10)
-                    FileUtil.write("/home/fdse/xiyaoguo/out.txt", project.getId() + " , count : " + count);
+                projectStudy.invokeCount();
             } catch (StackOverflowError e) {
 
             }
@@ -147,15 +144,15 @@ public class ProjectStudy {
     }
 
     public void run2() {
-        ProjectStudy projectStudy = new ProjectStudy("/home/fdse/xyy/study/code");
+        ProjectStudy projectStudy = new ProjectStudy("/Users/xiyaoguo/Desktop/code");
         System.out.println(projectStudy.invokeCount());
         String idsString = projectStudy.getIds().stream().map(Object::toString).collect(Collectors.joining(","));
         System.out.println("ids : " + idsString);
-        FileUtil.write("/home/fdse/xyy/study/ids", idsString);
+        //FileUtil.write("/home/fdse/xyy/study/ids", idsString);
     }
 
     public static void main(String[] args) {
-        new ProjectStudy().run2();
+        new ProjectStudy().run();
 
 
     }

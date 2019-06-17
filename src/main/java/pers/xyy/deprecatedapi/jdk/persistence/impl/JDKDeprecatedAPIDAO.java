@@ -307,6 +307,8 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
                 api.setType(rs.getInt(16));
                 api.setQualifiedSignature(rs.getString(17));
                 api.setReplace(rs.getString(18));
+                api.setFeatureType(rs.getInt(19));
+                api.setConfidenceType(rs.getInt(20));
             }
         } catch (Exception e) {
             e.printStackTrace();

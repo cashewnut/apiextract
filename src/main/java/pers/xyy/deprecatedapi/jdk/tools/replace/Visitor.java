@@ -50,9 +50,12 @@ public class Visitor {
                 break;
         }
 
-        if (replace.getComment() != null) {
+//        mc.setComment(new LineComment("hello"));
+
+        if (replace.getComments() != null) {
             Node node = findStatement(mc);
-            node.setComment(new BlockComment(replace.getComment()));
+            node = node.setComment(new LineComment(String.join("\n", replace.getComments())));
+            node.replace(node);
         }
 
     }
@@ -130,7 +133,7 @@ public class Visitor {
         List<String> methods = new ArrayList<>();
         for (Method methodDesc : methodDescs)
             methods.add(transMethod(methodDesc, mc));
-        mc.replace(new NameExpr(placeMethodsHolder(replace.getOperations().get(0), methods)));
+        mc.replace(new NameExpr(placeMethodsHolder(mc, replace.getOperations().get(0), methods)));
     }
 
     //把method转成String,和replaceType3有很多重复代码，可以考虑重构
@@ -231,9 +234,11 @@ public class Visitor {
     }
 
     //更换占位符，$m0,$m1...
-    private String placeMethodsHolder(String origin, List<String> methods) {
+    private String placeMethodsHolder(MethodCallExpr mc, String origin, List<String> methods) {
         for (int i = 0; i < methods.size(); i++)
             origin = origin.replace("$m" + i, methods.get(i));
+        if (origin.contains("$invoker"))
+            origin = origin.replace("$invoker", mc.getScope().get().toString());
         return origin;
     }
 
@@ -260,6 +265,19 @@ public class Visitor {
 
     private JDKDeprecatedAPI getApi(MethodCallExpr mc) {
         JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+        if (mc.getNameAsString().equals("engineCanResolve")) {
+            api = service.getById(129);
+            return api;
+        }
+        if (mc.getNameAsString().equals("engineResolve")) {
+            return service.getById(128);
+        }
+        if(mc.getNameAsString().equals("setValue") && mc.getScope().isPresent() && mc.getScope().get().toString().equals("attr"))
+            return null;
+        if(mc.getScope().isPresent() && mc.getScope().get().toString().equals("NameImpl") && mc.getNameAsString().equals("create"))
+            return null;
+        if (mc.getNameAsString().equals("create") && mc.getScope().isPresent() && mc.getScope().get().toString().equals("factory"))
+            return service.getById(50);
         ResolvedMethodDeclaration rmd = mc.resolveInvokedMethod();
         api.setPackageName(rmd.getPackageName());
         api.setClassName(rmd.getClassName());

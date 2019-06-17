@@ -71,7 +71,6 @@ public class FileUtil {
         try {
             bw = new BufferedWriter(new FileWriter(target, true));
             bw.write(str);
-            bw.newLine();
             bw.flush();
             bw.close();
         } catch (Exception e) {
