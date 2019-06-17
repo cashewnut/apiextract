@@ -27,10 +27,6 @@ import java.util.Date;
 public class C {
 
     public void testMethod(String str, JComponent jp) throws IOException, ResourceResolverException, SOAPException {
-        SOAPElementFactory factory = SOAPElementFactory.newInstance();
-        Name name = NameImpl.create("localname","prefix","uri");
-        SOAPElement soapElement2 = factory.create(name);
-        String auto = new File("").toURL().getAuthority();
         Date date = new Date();
         int month = 5;
         date.setMonth(5);
