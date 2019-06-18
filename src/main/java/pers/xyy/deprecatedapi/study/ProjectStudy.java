@@ -23,10 +23,10 @@ public class ProjectStudy {
 
     private final static String baseURL = "/home/fdse/xiyaoguo/jars/";
 
-    private final static String junitOut = "/home/fdse/xiyaoguo/out500/junit";
-    private final static String guavaOut = "/home/fdse/xiyaoguo/out500/guava";
-    private final static String ioOut = "/home/fdse/xiyaoguo/out500/commons-io";
-    private final static String lang3Out = "/home/fdse/xiyaoguo/out500/commons-lang3";
+    private final static String junitOut = "/home/fdse/xiyaoguo/out1000/junit";
+    private final static String guavaOut = "/home/fdse/xiyaoguo/out1000/guava";
+    private final static String ioOut = "/home/fdse/xiyaoguo/out1000/commons-io";
+    private final static String lang3Out = "/home/fdse/xiyaoguo/out1000/commons-lang3";
 
     static {
         try {
