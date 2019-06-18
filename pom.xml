@@ -55,7 +55,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>pers.xyy.deprecatedapi.study.ProjectStudy</mainClass>
+                    <mainClass>pers.xyy.deprecatedapi.study.ProjectStudy2</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                 </configuration>
             </plugin>

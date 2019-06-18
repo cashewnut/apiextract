@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 
 public class A {
 
-    private static final String SQL = "select id,comment from guava";
+    private static final String SQL = "select id,comment from commons_lang3";
 
     public static void main(String[] args) {
         Connection connection = null;
@@ -21,8 +21,8 @@ public class A {
             preparedStatement = connection.prepareStatement(SQL);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                FileUtil.write("/Users/xiyaoguo/Desktop/out", "<No." + rs.getInt(1) + ">\n");
-                FileUtil.write("/Users/xiyaoguo/Desktop/out", rs.getString(2) + "\n\n\n");
+                FileUtil.write("/Users/xiyaoguo/Desktop/commons-lang3_comments", "<No." + rs.getInt(1) + ">\n");
+                FileUtil.write("/Users/xiyaoguo/Desktop/commons-lang3_comments", rs.getString(2) + "\n\n\n");
             }
         } catch (Exception e) {
 

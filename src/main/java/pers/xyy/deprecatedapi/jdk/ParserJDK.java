@@ -43,7 +43,7 @@ public class ParserJDK {
 
     static {
         try {
-            TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), JarTypeSolver.getJarTypeSolver("/Users/xiyaoguo/Desktop/third_party/slf4j-api-1.7.26.jar"));
+            TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), JarTypeSolver.getJarTypeSolver("/Users/xiyaoguo/Desktop/third_party/commons-lang3-3.9.jar"));
             JavaSymbolSolver symbolSolver = new JavaSymbolSolver(typeSolver);
             JavaParser.getStaticConfiguration().setSymbolResolver(symbolSolver);
         } catch (IOException e) {
@@ -93,7 +93,7 @@ public class ParserJDK {
             if (md.getBegin().isPresent())
                 api.setLine(md.getBegin().get().line);
             System.out.println(String.format("%s.%s:%s", api.getPackageName(), api.getClassName(), api.getMethodName()));
-            //service.saveJDKDeprecatedAPI(api);
+            service.saveJDKDeprecatedAPI(api);
         }
         count += mds.size();
 
@@ -153,7 +153,7 @@ public class ParserJDK {
     }
 
     public static void main(String[] args) {
-        List<String> javaFilePath = FileUtil.getJavaFilePath(new File("/Users/xiyaoguo/Desktop/third_party/slf4j-1.7.26/slf4j-api/"));
+        List<String> javaFilePath = FileUtil.getJavaFilePath(new File("/Users/xiyaoguo/Desktop/third_party/commons-lang-commons-lang-3.9/"));
         ParserJDK parserJDK = new ParserJDK();
         for (String path : javaFilePath) {
             parserJDK.parseFile(path);

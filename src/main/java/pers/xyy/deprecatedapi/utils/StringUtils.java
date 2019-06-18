@@ -30,6 +30,8 @@ public class StringUtils {
         String[] str1s = str1.split("\\.");
         String[] str2s = str2.split("\\.");
         String s1 = str1s[str1s.length - 1], s2 = str2s[str2s.length - 1];
+        s1 = s1.replace("<?>", "");
+        s2 = s2.replace("<?>", "");
         if (s1.equals(s2))
             return true;
         if (map.containsKey(s1)) {

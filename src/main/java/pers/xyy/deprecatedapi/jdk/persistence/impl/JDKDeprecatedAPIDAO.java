@@ -117,8 +117,8 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             preparedStatement.setInt(15, jdkDeprecatedAPI.getType());
             preparedStatement.setString(16, jdkDeprecatedAPI.getQualifiedSignature());
             preparedStatement.setString(17, jdkDeprecatedAPI.getReplace());
-            preparedStatement.setInt(18,jdkDeprecatedAPI.getFeatureType());
-            preparedStatement.setInt(19,jdkDeprecatedAPI.getConfidenceType());
+            preparedStatement.setInt(18, jdkDeprecatedAPI.getFeatureType());
+            preparedStatement.setInt(19, jdkDeprecatedAPI.getConfidenceType());
             preparedStatement.setInt(20, jdkDeprecatedAPI.getId());
             preparedStatement.execute();
         } catch (Exception e) {
@@ -318,5 +318,37 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
             DBUtil.closeConnection(connection);
         }
         return api;
+    }
+
+    @Override
+    public List<JDKDeprecatedAPI> getAPIsByDBName(String dbName) {
+        String sql = "select id,package,class,method_name,method_return_type,method_args,'type' from " + dbName;
+        List<JDKDeprecatedAPI> apis = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection = DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                JDKDeprecatedAPI api = new JDKDeprecatedAPI();
+                api.setId(rs.getInt(1));
+                api.setPackageName(rs.getString(2));
+                api.setClassName(rs.getString(3));
+                api.setMethodName(rs.getString(4));
+                api.setMethodReturnType(rs.getString(5));
+                api.setMethodArgs(rs.getString(6));
+                api.setType(rs.getInt(7));
+                apis.add(api);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeResultset(rs);
+            DBUtil.closePreparedStatement(preparedStatement);
+            DBUtil.closeConnection(connection);
+        }
+        return apis;
     }
 }

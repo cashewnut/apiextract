@@ -56,4 +56,9 @@ public class JDKDeprecatedAPIService implements IJDKDeprecatedAPIService {
     public JDKDeprecatedAPI getById(int id) {
         return dao.getById(id);
     }
+
+    @Override
+    public List<JDKDeprecatedAPI> getAPIsByDBName(String dbName) {
+        return dao.getAPIsByDBName(dbName);
+    }
 }

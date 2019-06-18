@@ -22,4 +22,6 @@ public interface IJDKDeprecatedAPIService {
 
     JDKDeprecatedAPI getById(int id);
 
+    List<JDKDeprecatedAPI> getAPIsByDBName(String dbName);
+
 }
