@@ -59,10 +59,17 @@ public class ProjectStudy {
     public void analyze(String project) {
         List<String> javaFilePaths = FileUtil.getJavaFilePath(new File(project));
         for (String path : javaFilePaths) {
-            CompilationUnit cu = FileUtil.openCU(path);
-            List<MethodCallExpr> mcs = cu.findAll(MethodCallExpr.class);
-            for (MethodCallExpr mc : mcs) {
-                isDeprecated(mc);
+            try {
+                System.out.println(path);
+                CompilationUnit cu = FileUtil.openCU(path);
+                List<MethodCallExpr> mcs = cu.findAll(MethodCallExpr.class);
+                for (MethodCallExpr mc : mcs) {
+                    isDeprecated(mc);
+                }
+            }catch (Exception e){
+
+            }catch (StackOverflowError e1){
+                System.out.println("StackOverflowError");
             }
         }
     }
