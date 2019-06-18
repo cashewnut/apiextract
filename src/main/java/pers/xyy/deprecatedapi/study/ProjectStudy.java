@@ -59,6 +59,8 @@ public class ProjectStudy {
     public void analyze(String project) {
         List<String> javaFilePaths = FileUtil.getJavaFilePath(new File(project));
         System.out.println("This project has " + javaFilePaths.size() + " classes");
+        if (javaFilePaths.size() > 2000)
+            return;
         for (String path : javaFilePaths) {
             try {
 //                System.out.println(path);
@@ -67,9 +69,9 @@ public class ProjectStudy {
                 for (MethodCallExpr mc : mcs) {
                     isDeprecated(mc);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
-            }catch (StackOverflowError e1){
+            } catch (StackOverflowError e1) {
                 System.out.println("StackOverflowError");
             }
         }
@@ -151,7 +153,7 @@ public class ProjectStudy {
             FileUtil.write(ioOut, "\n\nProjectID : " + project.getId() + "\n");
             FileUtil.write(lang3Out, "\n\nProjectID : " + project.getId() + "\n");
             try {
-               projectStudy.analyze(project.getLocalAddress());
+                projectStudy.analyze(project.getLocalAddress());
             } catch (StackOverflowError e) {
                 System.out.println("StackOverflowError");
             }
