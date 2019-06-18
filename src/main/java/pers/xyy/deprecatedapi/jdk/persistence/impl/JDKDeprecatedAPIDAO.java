@@ -322,7 +322,7 @@ public class JDKDeprecatedAPIDAO implements IJDKDeprecatedAPIDAO {
 
     @Override
     public List<JDKDeprecatedAPI> getAPIsByDBName(String dbName) {
-        String sql = "select id,package,class,method_name,method_return_type,method_args,'type' from " + dbName;
+        String sql = "select id,package,class,method_name,method_return_type,method_args,type from " + dbName;
         List<JDKDeprecatedAPI> apis = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
