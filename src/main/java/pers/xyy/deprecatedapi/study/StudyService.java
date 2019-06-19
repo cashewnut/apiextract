@@ -10,7 +10,7 @@ import java.util.List;
 
 public class StudyService {
 
-    private final static String search = "select id,repos_name,local_addr from repository_java where stars_count>=1000 and master_host=84 and primaryLanguage='Java' and is_downloaded=1 and id>197973";
+    private final static String search = "select id,repos_name,local_addr from repository_java where stars_count>=1000 and master_host=84 and primaryLanguage='Java' and is_downloaded=1 and id>313451";
     private final static String URL = "jdbc:mysql://10.141.221.85:3306/github?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
 
     public List<Project> getProjects() {
