@@ -22,11 +22,11 @@ import java.util.List;
 public class ProjectStudy {
 
     private final static String baseURL = "/home/fdse/xiyaoguo/jars/";
-
-    private final static String junitOut = "/home/fdse/xiyaoguo/out1000/junit";
-    private final static String guavaOut = "/home/fdse/xiyaoguo/out1000/guava";
-    private final static String ioOut = "/home/fdse/xiyaoguo/out1000/commons-io";
-    private final static String lang3Out = "/home/fdse/xiyaoguo/out1000/commons-lang3";
+    private final static String jdkOut = "/home/fdse/xiyaoguo/out/jdk";
+    private final static String junitOut = "/home/fdse/xiyaoguo/out/junit";
+    private final static String guavaOut = "/home/fdse/xiyaoguo/out/guava";
+    private final static String ioOut = "/home/fdse/xiyaoguo/out/commons-io";
+    private final static String lang3Out = "/home/fdse/xiyaoguo/out/commons-lang3";
 
     static {
         try {
@@ -42,6 +42,7 @@ public class ProjectStudy {
         }
     }
 
+    private List<JDKDeprecatedAPI> jdks;
     private List<JDKDeprecatedAPI> junits;
     private List<JDKDeprecatedAPI> guavas;
     private List<JDKDeprecatedAPI> ios;
@@ -50,6 +51,7 @@ public class ProjectStudy {
     private IJDKDeprecatedAPIService service = new JDKDeprecatedAPIService();
 
     public ProjectStudy() {
+        this.jdks = service.getAPIsByDBName("jdk_deprecated_api8");
         this.junits = service.getAPIsByDBName("junit");
         this.guavas = service.getAPIsByDBName("guava");
         this.ios = service.getAPIsByDBName("commons_io");
@@ -91,6 +93,18 @@ public class ProjectStudy {
                     params += rmd.getParam(i).describeType();
                 else
                     params = params + rmd.getParam(i).describeType() + ",";
+            }
+
+            //check jdk
+            for(JDKDeprecatedAPI api : jdks){
+                if (api.getType() == 0)
+                    continue;
+                if (api.getMethodName().equals(methodName)) {
+                    if (StringUtils.typeEquals(type, api.getMethodReturnType()) && StringUtils.typeEquals(className, api.getClassName()) && StringUtils.typeEquals(pgName, api.getPackageName()) && StringUtils.typeEquals(api.getMethodArgs().split(","), params.split(","))) {
+                        FileUtil.write(jdkOut, api.getId() + ",");
+                        return;
+                    }
+                }
             }
 
             //check junit
@@ -148,6 +162,7 @@ public class ProjectStudy {
         List<Project> projects = studyService.getProjects();
         for (Project project : projects) {
             System.out.println(">>>>>>>>>>>>>>>>>>>ProjectID : " + project.getId());
+            FileUtil.write(jdkOut, "\n\nProjectID : " + project.getId() + "\n");
             FileUtil.write(junitOut, "\n\nProjectID : " + project.getId() + "\n");
             FileUtil.write(guavaOut, "\n\nProjectID : " + project.getId() + "\n");
             FileUtil.write(ioOut, "\n\nProjectID : " + project.getId() + "\n");
