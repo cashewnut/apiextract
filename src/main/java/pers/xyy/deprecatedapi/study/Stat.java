@@ -9,7 +9,7 @@ public class Stat {
 
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
-        File file = new File("/Users/xiyaoguo/Desktop/deprecatedAPI/845/commons-lang3");
+        File file = new File("/Users/xiyaoguo/Desktop/deprecatedAPI/84200/jdk");
         BufferedReader br = null;
         try{
             br = new BufferedReader(new FileReader(file));
