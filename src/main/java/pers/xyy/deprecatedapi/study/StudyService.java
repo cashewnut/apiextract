@@ -11,7 +11,7 @@ import java.util.List;
 public class StudyService {
 
 //    private final static String search = "select id,repos_name,local_addr from repository_java where stars_count>=100 and stars_count<200 and master_host=84 and primaryLanguage='Java' and is_downloaded=1 and id > 476692";
-    private final static String search = "select id,repos_name,local_addr from repository_java where stars_count>=200 and stars_count<500 and master_host=84 and primaryLanguage='Java' and is_downloaded=1 and id > 475340";
+    private final static String search = "select id,repos_name,local_addr from repository_java where stars_count>=200 and stars_count<500 and master_host=84 and primaryLanguage='Java' and is_downloaded=1 and id > 673825";
     private final static String URL = "jdbc:mysql://10.141.221.85:3306/github?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
 
     public List<Project> getProjects() {
